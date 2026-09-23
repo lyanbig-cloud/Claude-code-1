@@ -243,6 +243,10 @@
   body.mode-chroma .btn, body.mode-chroma .seg { background: rgba(0,0,0,0.45); }
   body.mode-chroma .hint { color: rgba(0,0,0,0.6); }
 
+  /* ?alpha → fondo transparente para exportar con canal alfa */
+  html:has(body.mode-alpha), body.mode-alpha { background: transparent; }
+  body.mode-alpha .bg, body.mode-alpha .refract, body.mode-alpha .ui { display: none; }
+
   /* Ocultar la interfaz para grabar limpio (tecla H) */
   body.clean .ui { opacity: 0; pointer-events: none; }
   .ui { transition: opacity .25s ease; }
@@ -379,6 +383,8 @@
   window.addEventListener('keyup', (e) => { if (e.code === 'Space') e.preventDefault(); });
 
   window.addEventListener('resize', () => { lockWidth(); alignRefraction(); });
+
+  if (new URLSearchParams(location.search).has('alpha')) document.body.classList.add('mode-alpha');
 
   const init = () => { lockWidth(); alignRefraction(); syncBlobs(); run(); };
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(init); else init();

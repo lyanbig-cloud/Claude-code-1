@@ -71,6 +71,8 @@
     color: rgba(255,255,255,.5);
   }
   body.mode-chroma .hint { color: rgba(0,0,0,.6); }
+  html:has(body.mode-alpha), body.mode-alpha { background: transparent; }
+  body.mode-alpha .ui { display: none; }
   @media (max-width: 560px) { .hint { display: none; } }
 
   #status {
@@ -132,6 +134,7 @@ const COLORS = {
   normal: { money: 0x22C55E, emissive: 0x16a34a, bg: 0x07070f },
   chroma: { money: 0x16A34A, emissive: 0x0b5a28, bg: 0x00FF00 },
   black:  { money: 0x22C55E, emissive: 0x16a34a, bg: 0x000000 },
+  alpha:  { money: 0x22C55E, emissive: 0x16a34a, bg: null },     // ?alpha → fondo transparente (render con canal alfa)
 };
 
 function fmt(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
@@ -140,7 +143,8 @@ const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
 const clamp01 = (t) => Math.min(Math.max(t, 0), 1);
 
 // ---------- Renderer / escena ----------
-const renderer = new THREE.WebGLRenderer({ antialias: true });
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+renderer.setClearColor(0x000000, 0);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -198,6 +202,35 @@ const moneyMat = new THREE.MeshPhysicalMaterial({
   envMapIntensity: 0.4,
 });
 const outlineMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+
+// Modo transparente: el bloom y la transmission no conservan el canal alfa,
+// así que se sustituyen por un halo suave por carácter y un vidrio esmerilado translúcido.
+const haloTex = (() => {
+  const c = document.createElement('canvas');
+  c.width = c.height = 128;
+  const g = c.getContext('2d');
+  const grd = g.createRadialGradient(64, 64, 0, 64, 64, 64);
+  grd.addColorStop(0, 'rgba(255,255,255,0.55)');
+  grd.addColorStop(0.45, 'rgba(255,255,255,0.22)');
+  grd.addColorStop(1, 'rgba(255,255,255,0)');
+  g.fillStyle = grd;
+  g.fillRect(0, 0, 128, 128);
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.SRGBColorSpace;
+  return t;
+})();
+const haloMat = new THREE.MeshBasicMaterial({ map: haloTex, color: 0x22C55E, transparent: true, depthWrite: false, toneMapped: false });
+const haloGeo = new THREE.PlaneGeometry(1, 1);
+const frostMat = new THREE.MeshPhysicalMaterial({
+  color: 0xffffff,
+  transparent: true,
+  opacity: 0.16,
+  roughness: 0.08,
+  clearcoat: 1,
+  clearcoatRoughness: 0.05,
+  envMapIntensity: 1.6,
+  depthWrite: false,
+});
 
 const glassMat = new THREE.MeshPhysicalMaterial({
   color: 0xffffff,
@@ -263,6 +296,13 @@ function buildGlyphs(font) {
     const outlineMesh = new THREE.Mesh(cache['0'].outline, outlineMat);
     outlineMesh.visible = false;
     mesh.add(outlineMesh);
+    const halo = new THREE.Mesh(haloGeo, haloMat);
+    halo.scale.set(1.9, 2.1, 1);
+    halo.position.set(0, -baselineShift, -0.5);
+    halo.renderOrder = -1;
+    halo.visible = false;
+    mesh.add(halo);
+    mesh.userData.halo = halo;
     mesh.position.y = baselineShift;
     rig.add(mesh);
     slots.push({ mesh, outline: outlineMesh, char: null });
@@ -350,7 +390,7 @@ function fit() {
 }
 
 // ---------- Modos de fondo ----------
-let mode = 'normal';
+let mode = new URLSearchParams(location.search).has('alpha') ? 'alpha' : 'normal';
 function setMode(next) {
   mode = next;
   document.body.classList.toggle('mode-chroma', mode === 'chroma');
@@ -358,13 +398,18 @@ function setMode(next) {
     b.setAttribute('aria-pressed', String(b.dataset.mode === mode)));
 
   const c = COLORS[mode];
-  scene.background.set(c.bg);
+  scene.background = c.bg === null ? null : new THREE.Color(c.bg);
   moneyMat.color.set(c.money);
   moneyMat.emissive.set(c.emissive);
 
   const chroma = mode === 'chroma';
   blobs.visible = mode === 'normal';
-  if (panel) panel.visible = !chroma;
+  document.body.classList.toggle('mode-alpha', mode === 'alpha');
+  if (panel) {
+    panel.visible = !chroma;
+    panel.material = mode === 'alpha' ? frostMat : glassMat;
+  }
+  for (const s of slots) s.mesh.userData.halo.visible = mode === 'alpha';
   // En croma: sin tone mapping (el fondo sale #00FF00 exacto) y sin bloom verde que se "coma" el key
   renderer.toneMapping = chroma ? THREE.NoToneMapping : THREE.ACESFilmicToneMapping;
   bloom.enabled = !chroma;
@@ -429,7 +474,8 @@ function frame(now) {
     );
   }
 
-  composer.render();
+  if (mode === 'alpha') renderer.render(scene, camera);
+  else composer.render();
 }
 
 // ---------- Controles ----------
