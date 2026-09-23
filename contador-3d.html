@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Contador 3D</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #07070f;
+    font-family: "SF Pro Display", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  canvas { display: block; }
+
+  .ui { transition: opacity .25s ease; }
+  body.clean .ui { opacity: 0; pointer-events: none; }
+
+  .btn, .seg button {
+    font-family: inherit;
+    font-weight: 600;
+    color: rgba(255,255,255,.92);
+    border: none;
+    cursor: pointer;
+  }
+  .btn {
+    position: fixed;
+    left: 50%;
+    bottom: max(28px, env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+    padding: 11px 22px;
+    border-radius: 999px;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,.14);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+            backdrop-filter: blur(16px) saturate(180%);
+    box-shadow: inset 1px 1px 0 rgba(255,255,255,.6), inset 0 -6px 12px -6px rgba(0,0,0,.3), 0 8px 20px -6px rgba(0,0,0,.4);
+  }
+  .btn:hover { background: rgba(255,255,255,.22); }
+  .btn:active { transform: translateX(-50%) scale(.96); }
+  .btn svg { width: 15px; height: 15px; }
+
+  .seg {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    display: flex;
+    gap: 2px;
+    padding: 4px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.12);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+            backdrop-filter: blur(16px) saturate(180%);
+    box-shadow: inset 1px 1px 0 rgba(255,255,255,.5), 0 8px 20px -6px rgba(0,0,0,.4);
+  }
+  .seg button { padding: 8px 14px; border-radius: 999px; background: transparent; font-size: 13px; }
+  .seg button[aria-pressed="true"] { background: rgba(255,255,255,.9); color: #111; }
+  body.mode-chroma .btn, body.mode-chroma .seg { background: rgba(0,0,0,.45); }
+
+  .hint {
+    position: fixed;
+    top: 24px;
+    left: 16px;
+    font-size: 12px;
+    color: rgba(255,255,255,.5);
+  }
+  body.mode-chroma .hint { color: rgba(0,0,0,.6); }
+  @media (max-width: 560px) { .hint { display: none; } }
+
+  #status {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: rgba(255,255,255,.6);
+    font-size: 14px;
+    pointer-events: none;
+    padding: 16px;
+    text-align: center;
+  }
+</style>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+
+<div id="status">Cargando…</div>
+
+<button class="btn ui" id="replay" type="button">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>
+  Replay
+</button>
+
+<div class="seg ui" role="group" aria-label="Fondo">
+  <button type="button" data-mode="normal" aria-pressed="true">Normal</button>
+  <button type="button" data-mode="chroma" aria-pressed="false">Croma</button>
+  <button type="button" data-mode="black" aria-pressed="false">Negro</button>
+</div>
+
+<p class="hint ui">Espacio = repetir · H = ocultar controles</p>
+
+<script type="module">
+import * as THREE from 'three';
+import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+
+const FONT_URL = 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/fonts/helvetiker_bold.typeface.json';
+const TARGET = 615000;
+const COUNT_MS = 1500;
+const POP_MS = 450;
+const SETTLE_MS = 1400;
+const FINAL_TEXT = fmt(TARGET);
+
+const COLORS = {
+  normal: { money: 0x22C55E, emissive: 0x16a34a, bg: 0x07070f },
+  chroma: { money: 0x16A34A, emissive: 0x0b5a28, bg: 0x00FF00 },
+  black:  { money: 0x22C55E, emissive: 0x16a34a, bg: 0x000000 },
+};
+
+function fmt(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
+const easeOutExpo = (t) => (t >= 1 ? 1 : 1 - Math.pow(2, -10 * t));
+const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+const clamp01 = (t) => Math.min(Math.max(t, 0), 1);
+
+// ---------- Renderer / escena ----------
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 0.85;
+document.body.prepend(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(COLORS.normal.bg);
+
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(renderer), 0.04).texture;
+
+const camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 100);
+
+const keyLight = new THREE.DirectionalLight(0xffffff, 1.6);
+keyLight.position.set(-4, 6, 8);
+scene.add(keyLight);
+const rimLight = new THREE.DirectionalLight(0x88ffcc, 0.8);
+rimLight.position.set(5, -2, -3);
+scene.add(rimLight);
+
+// ---------- Blobs de fondo ----------
+const blobs = new THREE.Group();
+scene.add(blobs);
+const blobDefs = [
+  { color: 0xec4899, r: 1.9, x: -3.2, y: 1.2,  z: -5,   sx: 0.9, sy: 0.6, phase: 0.0 },
+  { color: 0x06b6d4, r: 2.2, x: 3.4,  y: -1.0, z: -6,   sx: 0.7, sy: 0.8, phase: 1.7 },
+  { color: 0xf59e0b, r: 1.4, x: 1.2,  y: 1.8,  z: -4.2, sx: 1.1, sy: 0.5, phase: 3.1 },
+  { color: 0x8b5cf6, r: 1.7, x: -1.6, y: -1.7, z: -4.6, sx: 0.8, sy: 0.7, phase: 4.4 },
+  { color: 0x22d3ee, r: 1.0, x: 4.6,  y: 2.2,  z: -5.5, sx: 0.6, sy: 0.9, phase: 2.3 },
+  { color: 0xf43f5e, r: 1.1, x: -4.8, y: -2.4, z: -5.2, sx: 0.7, sy: 0.6, phase: 5.2 },
+];
+const sphereGeo = new THREE.SphereGeometry(1, 48, 32);
+for (const d of blobDefs) {
+  const m = new THREE.Mesh(sphereGeo, new THREE.MeshStandardMaterial({
+    color: d.color, emissive: d.color, emissiveIntensity: 0.18, roughness: 0.4, metalness: 0,
+  }));
+  m.scale.setScalar(d.r);
+  m.userData = d;
+  blobs.add(m);
+}
+
+// ---------- Conjunto principal (vidrio + números) ----------
+const rig = new THREE.Group();   // giro / pop / flotación
+scene.add(rig);
+
+const moneyMat = new THREE.MeshPhysicalMaterial({
+  color: COLORS.normal.money,
+  metalness: 0.1,
+  roughness: 0.28,
+  clearcoat: 1,
+  clearcoatRoughness: 0.12,
+  emissive: COLORS.normal.emissive,
+  emissiveIntensity: 0.3,
+  envMapIntensity: 0.4,
+});
+const outlineMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+
+const glassMat = new THREE.MeshPhysicalMaterial({
+  color: 0xffffff,
+  transmission: 1,
+  roughness: 0.06,
+  metalness: 0,
+  thickness: 1.2,
+  ior: 1.5,
+  clearcoat: 1,
+  clearcoatRoughness: 0.04,
+  specularIntensity: 1,
+  envMapIntensity: 1.3,
+  attenuationColor: new THREE.Color(0xe8fff2),
+  attenuationDistance: 6,
+});
+
+// ---------- Post-procesado ----------
+const composer = new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene, camera));
+const bloom = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.38, 0.5, 0.8);
+composer.addPass(bloom);
+composer.addPass(new OutputPass());
+
+// ---------- Glifos cacheados ----------
+const GLYPHS = '0123456789$,';
+const TEXT_SIZE = 1;
+const DIGIT_GAP = 0.1;
+const cache = {};           // char -> { geo, outline, width }
+let digitAdvance = 0;
+let baselineShift = 0;
+let slots = [];             // { mesh, outline, char }
+let panel;
+let layoutWidth = 0;
+
+function buildGlyphs(font) {
+  const base = {
+    font, size: TEXT_SIZE, height: 0.42, curveSegments: 10,
+    bevelEnabled: true, bevelThickness: 0.1, bevelSize: 0.045, bevelSegments: 6,
+  };
+  for (const ch of GLYPHS) {
+    const geo = new TextGeometry(ch, base);
+    geo.computeBoundingBox();
+    const bb = geo.boundingBox;
+    const cx = (bb.min.x + bb.max.x) / 2;
+    geo.translate(-cx, 0, -0.21);
+
+    // Versión "gorda" para el borde blanco del modo croma
+    const outline = new TextGeometry(ch, { ...base, height: 0.3, bevelSize: 0.1, bevelThickness: 0.06 });
+    outline.computeBoundingBox();
+    const ob = outline.boundingBox;
+    outline.translate(-(ob.min.x + ob.max.x) / 2, 0, -0.11);
+
+    cache[ch] = { geo, outline, width: bb.max.x - bb.min.x };
+  }
+  // Todos los dígitos avanzan lo mismo = no bailan
+  digitAdvance = Math.max(...'0123456789'.split('').map((c) => cache[c].width)) + DIGIT_GAP;
+  const zb = new TextGeometry('0', base); zb.computeBoundingBox();
+  baselineShift = -(zb.boundingBox.min.y + zb.boundingBox.max.y) / 2;
+  zb.dispose();
+
+  for (let i = 0; i < FINAL_TEXT.length; i++) {
+    const mesh = new THREE.Mesh(cache['0'].geo, moneyMat);
+    const outlineMesh = new THREE.Mesh(cache['0'].outline, outlineMat);
+    outlineMesh.visible = false;
+    mesh.add(outlineMesh);
+    mesh.position.y = baselineShift;
+    rig.add(mesh);
+    slots.push({ mesh, outline: outlineMesh, char: null });
+  }
+  layoutWidth = measure(FINAL_TEXT);
+}
+
+function advanceOf(ch) {
+  if (ch >= '0' && ch <= '9') return digitAdvance;
+  return cache[ch].width + DIGIT_GAP * 2;
+}
+function measure(str) {
+  let w = 0;
+  for (const ch of str) w += advanceOf(ch);
+  return w - DIGIT_GAP;
+}
+
+// Solo cambia la geometría de los slots cuyo carácter cambió
+function setText(str) {
+  const total = measure(str);
+  let x = -total / 2;
+  const outlineOn = mode === 'chroma';
+  for (let i = 0; i < slots.length; i++) {
+    const s = slots[i];
+    const ch = str[i];
+    if (!ch) { s.mesh.visible = false; s.char = null; continue; }
+    if (s.char !== ch) {
+      s.mesh.geometry = cache[ch].geo;
+      s.outline.geometry = cache[ch].outline;
+      s.char = ch;
+    }
+    const adv = advanceOf(ch);
+    s.mesh.visible = true;
+    s.outline.visible = outlineOn;
+    s.mesh.position.x = x + (adv - DIGIT_GAP) / 2;
+    x += adv;
+  }
+}
+
+function buildPanel() {
+  const w = layoutWidth + 1.5;
+  const h = TEXT_SIZE + 1.25;
+  const r = h * 0.42;
+  const shape = new THREE.Shape();
+  const x0 = -w / 2, y0 = -h / 2;
+  shape.moveTo(x0 + r, y0);
+  shape.lineTo(x0 + w - r, y0);
+  shape.quadraticCurveTo(x0 + w, y0, x0 + w, y0 + r);
+  shape.lineTo(x0 + w, y0 + h - r);
+  shape.quadraticCurveTo(x0 + w, y0 + h, x0 + w - r, y0 + h);
+  shape.lineTo(x0 + r, y0 + h);
+  shape.quadraticCurveTo(x0, y0 + h, x0, y0 + h - r);
+  shape.lineTo(x0, y0 + r);
+  shape.quadraticCurveTo(x0, y0, x0 + r, y0);
+  const geo = new THREE.ExtrudeGeometry(shape, {
+    depth: 0.25, curveSegments: 32,
+    bevelEnabled: true, bevelThickness: 0.2, bevelSize: 0.18, bevelSegments: 10,
+  });
+  geo.translate(0, 0, -0.75);
+  panel = new THREE.Mesh(geo, glassMat);
+  rig.add(panel);
+}
+
+// ---------- Encuadre responsive ----------
+let fitDist = 12;
+const blobSpread = new THREE.Vector2(1, 1);
+function fit() {
+  const w = window.innerWidth, h = window.innerHeight;
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+  renderer.setSize(w, h);
+  composer.setSize(w, h);
+  bloom.resolution.set(w, h);
+
+  const objW = (layoutWidth || 6) + 2.4;   // panel + margen
+  const objH = TEXT_SIZE + 3.2;
+  const tanV = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+  const distW = objW / 2 / (tanV * camera.aspect);
+  const distH = objH / 2 / tanV;
+  fitDist = Math.max(distW, distH);
+
+  // Blobs se reparten según el formato (más altos en vertical)
+  const tall = camera.aspect < 1;
+  blobSpread.set(tall ? 0.7 : 1, tall ? 1.9 : 1);
+}
+
+// ---------- Modos de fondo ----------
+let mode = 'normal';
+function setMode(next) {
+  mode = next;
+  document.body.classList.toggle('mode-chroma', mode === 'chroma');
+  document.querySelectorAll('.seg button').forEach((b) =>
+    b.setAttribute('aria-pressed', String(b.dataset.mode === mode)));
+
+  const c = COLORS[mode];
+  scene.background.set(c.bg);
+  moneyMat.color.set(c.money);
+  moneyMat.emissive.set(c.emissive);
+
+  const chroma = mode === 'chroma';
+  blobs.visible = mode === 'normal';
+  if (panel) panel.visible = !chroma;
+  // En croma: sin tone mapping (el fondo sale #00FF00 exacto) y sin bloom verde que se "coma" el key
+  renderer.toneMapping = chroma ? THREE.NoToneMapping : THREE.ACESFilmicToneMapping;
+  bloom.enabled = !chroma;
+  moneyMat.emissiveIntensity = chroma ? 0.1 : 0.3;
+  moneyMat.envMapIntensity = chroma ? 0.35 : 0.4;
+  for (const s of slots) s.outline.visible = chroma && s.mesh.visible;
+}
+
+// ---------- Animación ----------
+let startTime = performance.now();
+function replay() { startTime = performance.now(); }
+
+const clock = new THREE.Clock();
+function frame(now) {
+  requestAnimationFrame(frame);
+  const elapsed = now - startTime;
+  const t = elapsed / 1000;
+  const time = clock.getElapsedTime();
+
+  // Contador
+  const tc = clamp01(elapsed / COUNT_MS);
+  if (slots.length) setText(fmt(TARGET * easeOutExpo(tc)));
+
+  // Cámara: acercamiento con giro diagonal mientras cuenta
+  const tcam = easeOutCubic(clamp01(elapsed / (COUNT_MS + 300)));
+  const dist = THREE.MathUtils.lerp(fitDist * 1.75, fitDist, tcam);
+  const yaw = THREE.MathUtils.lerp(-0.55, 0, tcam);
+  const pitch = THREE.MathUtils.lerp(0.32, 0.04, tcam);
+  camera.position.set(
+    Math.sin(yaw) * Math.cos(pitch) * dist,
+    Math.sin(pitch) * dist,
+    Math.cos(yaw) * Math.cos(pitch) * dist,
+  );
+  camera.lookAt(0, 0, 0);
+
+  // Pop + giro que se asienta al frente
+  const after = elapsed - COUNT_MS;
+  let scale = 1, spinY = 0, spinX = 0;
+  if (after > 0) {
+    const tp = clamp01(after / POP_MS);
+    scale = 1 + 0.1 * Math.sin(Math.PI * tp);
+    const ts = after / SETTLE_MS;
+    const decay = Math.exp(-4.2 * ts);
+    spinY = 0.42 * Math.sin(ts * Math.PI * 3) * decay;
+    spinX = -0.08 * Math.sin(ts * Math.PI * 3) * decay;
+  }
+  rig.scale.setScalar(scale);
+  rig.rotation.set(spinX, spinY, 0);
+
+  // Flotación suave (entra progresivamente al terminar)
+  const floatIn = clamp01((after - 200) / 900);
+  rig.position.y = Math.sin(time * 1.4) * 0.09 * floatIn;
+  rig.rotation.z = Math.sin(time * 0.9) * 0.012 * floatIn;
+
+  // Blobs en movimiento lento
+  for (const m of blobs.children) {
+    const d = m.userData;
+    m.position.set(
+      (d.x + Math.sin(time * 0.25 * d.sx + d.phase) * 1.4) * blobSpread.x,
+      (d.y + Math.cos(time * 0.22 * d.sy + d.phase) * 1.1) * blobSpread.y,
+      d.z,
+    );
+  }
+
+  composer.render();
+}
+
+// ---------- Controles ----------
+document.getElementById('replay').addEventListener('click', replay);
+document.querySelectorAll('.seg button').forEach((b) =>
+  b.addEventListener('click', () => setMode(b.dataset.mode)));
+window.addEventListener('keydown', (e) => {
+  if (e.code === 'Space') { e.preventDefault(); replay(); }
+  else if (e.key === 'h' || e.key === 'H') document.body.classList.toggle('clean');
+});
+window.addEventListener('keyup', (e) => { if (e.code === 'Space') e.preventDefault(); });
+window.addEventListener('resize', fit);
+
+// ---------- Arranque ----------
+const status = document.getElementById('status');
+new FontLoader().load(FONT_URL, (font) => {
+  buildGlyphs(font);
+  buildPanel();
+  fit();
+  setMode(mode);
+  status.remove();
+  replay();
+  requestAnimationFrame(frame);
+}, undefined, () => {
+  status.textContent = 'No se pudo cargar la fuente 3D. Revisa tu conexión a internet.';
+});
+</script>
+</body>
+</html>

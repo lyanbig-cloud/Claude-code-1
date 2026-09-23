@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Contador Liquid Glass</title>
+<style>
+  :root {
+    --money: #22C55E;
+    --money-glow: rgba(34, 197, 94, 0.55);
+    --money-stroke: transparent;
+    --ui-fg: rgba(255, 255, 255, 0.92);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #0b0b14;
+    font-family: "SF Pro Display", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---------- Fondo animado ---------- */
+  .bg {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    background:
+      radial-gradient(120% 120% at 0% 0%, #1e1b4b 0%, transparent 60%),
+      radial-gradient(120% 120% at 100% 100%, #3b0764 0%, transparent 60%),
+      linear-gradient(135deg, #0f172a, #1e1b4b 50%, #111827);
+  }
+  .blob {
+    position: absolute;
+    width: 55vmax;
+    height: 55vmax;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.85;
+    will-change: transform;
+  }
+  .b1 { background: radial-gradient(circle, #ec4899 0%, transparent 65%); top: -15vmax; left: -10vmax; animation: drift1 22s ease-in-out infinite alternate; }
+  .b2 { background: radial-gradient(circle, #06b6d4 0%, transparent 65%); bottom: -20vmax; right: -12vmax; animation: drift2 26s ease-in-out infinite alternate; }
+  .b3 { background: radial-gradient(circle, #f59e0b 0%, transparent 65%); top: 20%; right: 10%; width: 40vmax; height: 40vmax; animation: drift3 19s ease-in-out infinite alternate; }
+  .b4 { background: radial-gradient(circle, #8b5cf6 0%, transparent 65%); bottom: 5%; left: 15%; width: 45vmax; height: 45vmax; animation: drift4 24s ease-in-out infinite alternate; }
+  /* Rayas finas: hacen muy visible la refracción del vidrio */
+  .stripes {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(115deg, rgba(255,255,255,0.07) 0 2px, transparent 2px 26px);
+  }
+
+  @keyframes drift1 { to { transform: translate(35vw, 25vh) scale(1.2); } }
+  @keyframes drift2 { to { transform: translate(-30vw, -30vh) scale(1.15); } }
+  @keyframes drift3 { to { transform: translate(-40vw, 30vh) scale(0.85); } }
+  @keyframes drift4 { to { transform: translate(30vw, -35vh) scale(1.25); } }
+
+  /* Modos para edición */
+  body.mode-chroma .bg, body.mode-black .bg { display: none; }
+  body.mode-chroma { background: #00FF00; }
+  body.mode-black  { background: #000; }
+
+  /* ---------- Escena ---------- */
+  .stage {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 36px;
+    padding: 16px;
+  }
+
+  /* ---------- Liquid Glass ---------- */
+  .glass {
+    position: relative;
+    isolation: isolate;
+    padding: clamp(22px, 4vw, 44px) clamp(32px, 6vw, 72px);
+    border-radius: 999px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.10);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+            backdrop-filter: blur(20px) saturate(180%);
+    box-shadow:
+      /* reflejo especular arriba-izquierda */
+      inset 2px 2px 1px -1px rgba(255, 255, 255, 0.85),
+      inset 10px 12px 24px -14px rgba(255, 255, 255, 0.55),
+      /* sombra interna suave abajo */
+      inset -2px -2px 2px -1px rgba(255, 255, 255, 0.25),
+      inset 0 -18px 30px -12px rgba(0, 0, 0, 0.28),
+      /* flotación */
+      0 30px 60px -10px rgba(0, 0, 0, 0.45),
+      0 10px 24px -8px rgba(0, 0, 0, 0.30);
+  }
+
+  /* Copia del fondo, distorsionada con el filtro SVG = refracción real */
+  .refract {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    overflow: hidden;
+    border-radius: inherit;
+  }
+  .refract .bg {
+    position: absolute;
+    inset: auto;
+    filter: url(#liquid) blur(6px) saturate(180%) brightness(1.08);
+    transform: scale(1.04);
+  }
+  body.mode-chroma .refract, body.mode-black .refract { display: none; }
+
+  /* Borde de luz: línea fina con gradiente (brillo arriba-izq, se apaga abajo-der) */
+  .glass::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.5px;
+    background: linear-gradient(135deg,
+      rgba(255,255,255,0.95) 0%,
+      rgba(255,255,255,0.25) 30%,
+      rgba(255,255,255,0.05) 55%,
+      rgba(255,255,255,0.35) 100%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    pointer-events: none;
+    z-index: 2;
+  }
+  /* Brillo superior curvo */
+  .glass::after {
+    content: "";
+    position: absolute;
+    left: 8%;
+    right: 8%;
+    top: 0;
+    height: 48%;
+    border-radius: 999px 999px 60% 60% / 999px 999px 40% 40%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.28), rgba(255,255,255,0));
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  /* ---------- Número ---------- */
+  .amount {
+    display: inline-block;
+    text-align: center;
+    font-size: clamp(56px, 12vw, 168px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1;
+    color: var(--money);
+    text-shadow:
+      0 0 18px var(--money-glow),
+      0 0 42px var(--money-glow),
+      0 2px 2px rgba(0, 0, 0, 0.25);
+    -webkit-text-stroke: 0 var(--money-stroke);
+    paint-order: stroke fill;
+    white-space: nowrap;
+    transform-origin: 50% 55%;
+  }
+  .amount.pop { animation: pop 0.42s cubic-bezier(.3, 1.6, .5, 1); }
+  @keyframes pop {
+    0%   { transform: scale(1); }
+    45%  { transform: scale(1.08); }
+    100% { transform: scale(1); }
+  }
+
+  /* En croma: verde más oscuro con borde blanco y sin glow verde (para que el key no lo borre) */
+  body.mode-chroma {
+    --money: #16A34A;
+    --money-stroke: #fff;
+  }
+  body.mode-chroma .amount {
+    -webkit-text-stroke: 0.06em var(--money-stroke);
+    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+  }
+  body.mode-chroma .glass {
+    background: rgba(255, 255, 255, 0.18);
+  }
+
+  /* ---------- Controles ---------- */
+  .btn, .seg button {
+    font: 600 14px/1 inherit;
+    font-family: inherit;
+    color: var(--ui-fg);
+    border: none;
+    cursor: pointer;
+  }
+  .btn {
+    padding: 11px 22px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.14);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+            backdrop-filter: blur(16px) saturate(180%);
+    box-shadow: inset 1px 1px 0 rgba(255,255,255,0.6), inset 0 -6px 12px -6px rgba(0,0,0,0.3), 0 8px 20px -6px rgba(0,0,0,0.4);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform .15s ease, background .15s ease;
+  }
+  .btn:hover { background: rgba(255, 255, 255, 0.22); }
+  .btn:active { transform: scale(0.96); }
+  .btn svg { width: 15px; height: 15px; }
+
+  .seg {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    display: flex;
+    padding: 4px;
+    gap: 2px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+            backdrop-filter: blur(16px) saturate(180%);
+    box-shadow: inset 1px 1px 0 rgba(255,255,255,0.5), 0 8px 20px -6px rgba(0,0,0,0.4);
+  }
+  .seg button {
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: transparent;
+    font-size: 13px;
+  }
+  .seg button[aria-pressed="true"] { background: rgba(255, 255, 255, 0.9); color: #111; }
+
+  .hint {
+    position: fixed;
+    bottom: 16px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    padding: 0 16px;
+  }
+  body.mode-chroma .btn, body.mode-chroma .seg { background: rgba(0,0,0,0.45); }
+  body.mode-chroma .hint { color: rgba(0,0,0,0.6); }
+
+  /* Ocultar la interfaz para grabar limpio (tecla H) */
+  body.clean .ui { opacity: 0; pointer-events: none; }
+  .ui { transition: opacity .25s ease; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .blob { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Filtro SVG de refracción: turbulencia suave + desplazamiento -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="liquid" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="0.008 0.014" numOctaves="2" seed="7" result="noise">
+      <animate attributeName="baseFrequency" dur="14s" values="0.008 0.014;0.011 0.009;0.008 0.014" repeatCount="indefinite" />
+    </feTurbulence>
+    <feGaussianBlur in="noise" stdDeviation="2" result="softNoise" />
+    <feDisplacementMap in="SourceGraphic" in2="softNoise" scale="70" xChannelSelector="R" yChannelSelector="G" />
+  </filter>
+</svg>
+
+<div class="bg" id="bg">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+  <div class="blob b4"></div>
+  <div class="stripes"></div>
+</div>
+
+<main class="stage">
+  <div class="glass" id="glass">
+    <div class="refract" id="refract"></div>
+    <span class="amount" id="amount" aria-live="polite">$0</span>
+  </div>
+
+  <button class="btn ui" id="replay" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>
+    Replay
+  </button>
+</main>
+
+<div class="seg ui" role="group" aria-label="Fondo">
+  <button type="button" data-mode="color" aria-pressed="true">Color</button>
+  <button type="button" data-mode="chroma" aria-pressed="false">Croma</button>
+  <button type="button" data-mode="black" aria-pressed="false">Negro</button>
+</div>
+
+<p class="hint ui">Espacio = repetir · H = ocultar controles para grabar</p>
+
+<script>
+(() => {
+  const TARGET = 615000;
+  const DURATION = 1500;
+
+  const amountEl = document.getElementById('amount');
+  const glass = document.getElementById('glass');
+  const refract = document.getElementById('refract');
+  const bg = document.getElementById('bg');
+
+  const fmt = (n) => '$' + Math.round(n).toLocaleString('en-US');
+  const easeOutExpo = (t) => (t >= 1 ? 1 : 1 - Math.pow(2, -10 * t));
+
+  // Ancho fijo = ancho del número final, así la píldora no cambia de tamaño mientras cuenta
+  function lockWidth() {
+    amountEl.style.width = 'auto';
+    const prev = amountEl.textContent;
+    amountEl.textContent = fmt(TARGET);
+    amountEl.style.width = Math.ceil(amountEl.getBoundingClientRect().width) + 'px';
+    amountEl.textContent = prev;
+  }
+
+  // Clon del fondo dentro del vidrio, alineado con el fondo real y distorsionado por el SVG
+  const clone = bg.cloneNode(true);
+  clone.removeAttribute('id');
+  refract.appendChild(clone);
+
+  function alignRefraction() {
+    const r = glass.getBoundingClientRect();
+    clone.style.left = -r.left + 'px';
+    clone.style.top = -r.top + 'px';
+    clone.style.width = window.innerWidth + 'px';
+    clone.style.height = window.innerHeight + 'px';
+  }
+
+  // Sincroniza las animaciones del clon con las del fondo real
+  function syncBlobs() {
+    const real = bg.getAnimations ? bg.getAnimations({ subtree: true }) : [];
+    const copy = clone.getAnimations ? clone.getAnimations({ subtree: true }) : [];
+    real.forEach((a, i) => { if (copy[i]) copy[i].currentTime = a.currentTime; });
+  }
+
+  let raf = 0;
+  function run() {
+    cancelAnimationFrame(raf);
+    amountEl.classList.remove('pop');
+    amountEl.textContent = fmt(0);
+    const start = performance.now();
+
+    const tick = (now) => {
+      const t = Math.min((now - start) / DURATION, 1);
+      amountEl.textContent = fmt(TARGET * easeOutExpo(t));
+      if (t < 1) {
+        raf = requestAnimationFrame(tick);
+      } else {
+        amountEl.textContent = fmt(TARGET);
+        void amountEl.offsetWidth; // reinicia la animación CSS
+        amountEl.classList.add('pop');
+      }
+    };
+    raf = requestAnimationFrame(tick);
+  }
+
+  function setMode(mode) {
+    document.body.classList.remove('mode-chroma', 'mode-black');
+    if (mode !== 'color') document.body.classList.add('mode-' + mode);
+    document.querySelectorAll('.seg button').forEach((b) =>
+      b.setAttribute('aria-pressed', String(b.dataset.mode === mode)));
+    requestAnimationFrame(() => { lockWidth(); alignRefraction(); });
+  }
+
+  document.getElementById('replay').addEventListener('click', run);
+  document.querySelectorAll('.seg button').forEach((b) =>
+    b.addEventListener('click', () => setMode(b.dataset.mode)));
+
+  window.addEventListener('keydown', (e) => {
+    if (e.code === 'Space') {
+      e.preventDefault(); // evita que el botón enfocado también se "pulse"
+      run();
+    } else if (e.key === 'h' || e.key === 'H') {
+      document.body.classList.toggle('clean');
+    }
+  });
+  window.addEventListener('keyup', (e) => { if (e.code === 'Space') e.preventDefault(); });
+
+  window.addEventListener('resize', () => { lockWidth(); alignRefraction(); });
+
+  const init = () => { lockWidth(); alignRefraction(); syncBlobs(); run(); };
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(init); else init();
+})();
+</script>
+</body>
+</html>
