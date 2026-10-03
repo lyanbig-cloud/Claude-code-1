@@ -1,0 +1,14 @@
+{
+  "name": "panel-higgsfield-dimelo-big",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Panel local para generar video con la API de Higgsfield — Dímelo Big Productions",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node scripts/prueba-local.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Panel Higgsfield · Dímelo Big</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2311131a'/%3E%3Cpath d='M12 9l12 7-12 7z' fill='%23f5b301'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">▶</span>
+      <div>
+        <strong>Dímelo Big Productions</strong>
+        <span class="muted">Panel de generación · Higgsfield</span>
+      </div>
+    </div>
+    <div class="meters">
+      <button class="meter" id="balanceMeter" type="button" title="Actualizar saldo">
+        <span class="meter-label">Saldo API</span>
+        <span class="meter-value" id="balanceValue">—</span>
+      </button>
+      <div class="meter" id="todayMeter">
+        <span class="meter-label">Gastado hoy</span>
+        <span class="meter-value"><span id="spentToday">$0.00</span> <span class="muted">/ <span id="dailyLimit">$10.00</span></span></span>
+        <span class="bar"><span id="todayBar"></span></span>
+      </div>
+      <button class="icon-btn" id="settingsBtn" type="button" title="Ajustes">⚙</button>
+    </div>
+  </header>
+
+  <div class="banner danger hidden" id="keyBanner"></div>
+  <div class="banner warn hidden" id="limitBanner"></div>
+
+  <main class="layout">
+    <section class="panel composer" aria-label="Nueva generación">
+      <div class="field">
+        <label for="clientSelect">Cliente</label>
+        <div class="row">
+          <select id="clientSelect"></select>
+          <button class="btn ghost" id="addClientBtn" type="button">+ Nuevo</button>
+        </div>
+      </div>
+
+      <div class="segmented" id="modeTabs" role="tablist"></div>
+
+      <div class="field">
+        <label for="modelSelect">Modelo</label>
+        <select id="modelSelect"></select>
+      </div>
+
+      <div class="field hidden" id="sourceField">
+        <label>Tu video grabado <span class="muted" id="sourceNote"></span></label>
+        <div class="dropzone" id="sourceZone" tabindex="0">
+          <input type="file" accept="video/mp4,video/quicktime" hidden>
+          <span>Arrastra tu video aquí o <u>elige un archivo</u> (MP4 o MOV)</span>
+        </div>
+        <div class="thumbs" id="sourceThumbs"></div>
+      </div>
+
+      <div class="field" id="imagesField">
+        <label>Fotos de referencia <span class="count" id="imagesCount"></span></label>
+        <p class="hint" id="imagesNote"></p>
+        <div class="dropzone" id="imagesZone" tabindex="0">
+          <input type="file" accept="image/jpeg,image/png,image/webp" multiple hidden>
+          <span>Arrastra fotos o <u>elige archivos</u> (JPG, PNG, WEBP)</span>
+        </div>
+        <div class="thumbs" id="imagesThumbs"></div>
+      </div>
+
+      <div class="field" id="videosField">
+        <label>Videos de referencia <span class="count" id="videosCount"></span></label>
+        <div class="dropzone" id="videosZone" tabindex="0">
+          <input type="file" accept="video/mp4,video/quicktime" multiple hidden>
+          <span>Arrastra videos o <u>elige archivos</u> (MP4 o MOV)</span>
+        </div>
+        <div class="thumbs" id="videosThumbs"></div>
+      </div>
+
+      <div class="field">
+        <label for="prompt" id="promptLabel">Prompt</label>
+        <textarea id="prompt" rows="5" placeholder="Describe lo que quieres ver…"></textarea>
+      </div>
+
+      <div class="grid2">
+        <div class="field" id="durationField">
+          <label for="duration">Duración <span class="muted" id="durationRange"></span></label>
+          <div class="row">
+            <input type="range" id="duration">
+            <output id="durationOut">5 s</output>
+          </div>
+        </div>
+        <div class="field" id="resolutionField">
+          <label for="resolution">Resolución</label>
+          <select id="resolution"></select>
+        </div>
+      </div>
+
+      <div class="field" id="aspectField">
+        <label>Formato</label>
+        <div class="segmented small" id="aspectTabs"></div>
+        <p class="hint hidden" id="aspectNote"></p>
+      </div>
+
+      <div class="grid2">
+        <label class="switch" id="audioField">
+          <input type="checkbox" id="audio">
+          <span>Generar audio</span>
+        </label>
+        <div class="field">
+          <label for="quantity">Cantidad</label>
+          <select id="quantity">
+            <option value="1">1 video</option>
+            <option value="2">2 variantes</option>
+            <option value="3">3 variantes</option>
+            <option value="4">4 variantes</option>
+          </select>
+        </div>
+      </div>
+
+      <p class="form-error hidden" id="formError"></p>
+      <button class="btn primary big" id="quoteBtn" type="button">Ver costo y generar</button>
+      <p class="hint center">Siempre verás el costo y tendrás que confirmarlo antes de gastar.</p>
+    </section>
+
+    <section class="panel results" aria-label="Galería">
+      <div class="results-head">
+        <div class="segmented small" role="tablist">
+          <button type="button" class="active" data-view="gallery">Galería</button>
+          <button type="button" data-view="log">Registro</button>
+        </div>
+        <div class="filters">
+          <select id="filterClient"><option value="">Todos los clientes</option></select>
+          <select id="filterModel"><option value="">Todos los modelos</option></select>
+        </div>
+      </div>
+      <div id="galleryView" class="gallery"></div>
+      <div id="logView" class="hidden">
+        <div class="log-totals" id="logTotals"></div>
+        <div class="table-wrap">
+          <table class="log">
+            <thead><tr><th>Fecha</th><th>Cliente</th><th>Modelo</th><th>Modo</th><th class="num">Costo</th><th>Estado</th></tr></thead>
+            <tbody id="logBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="confirmDialog">
+    <form method="dialog" class="dialog">
+      <h2>Confirmar gasto</h2>
+      <dl class="summary" id="confirmSummary"></dl>
+      <div class="total-box">
+        <span>Costo total</span>
+        <strong id="confirmTotal">$0.00</strong>
+      </div>
+      <p class="hint" id="confirmDetail"></p>
+      <p class="banner danger hidden" id="confirmBlocked"></p>
+      <label class="check hidden" id="approxCheck">
+        <input type="checkbox" id="approxAccept">
+        <span>Entiendo que este precio es <b>aproximado</b> y puede variar.</span>
+      </label>
+      <div class="dialog-actions">
+        <button class="btn ghost" value="cancel">Cancelar</button>
+        <button class="btn primary" id="confirmBtn" value="ok" type="button">Confirmar y generar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="settingsDialog">
+    <form method="dialog" class="dialog">
+      <h2>Ajustes de gasto</h2>
+      <div class="field">
+        <label for="limitInput">Límite de gasto diario (USD)</label>
+        <input type="number" id="limitInput" min="0" step="0.5">
+      </div>
+      <div class="field">
+        <label for="balanceInput">Saldo actual de la API (USD)</label>
+        <input type="number" id="balanceInput" min="0" step="0.01" placeholder="Ej. 25.00">
+        <p class="hint">Cópialo de <a href="https://console.higgsfield.ai" target="_blank" rel="noopener">console.higgsfield.ai</a>. El panel le resta cada generación automáticamente; actualízalo cuando recargues saldo.</p>
+      </div>
+      <div class="dialog-actions">
+        <button class="btn ghost" value="cancel">Cancelar</button>
+        <button class="btn primary" id="saveSettingsBtn" type="button">Guardar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="clientDialog">
+    <form method="dialog" class="dialog">
+      <h2>Nuevo cliente</h2>
+      <div class="field">
+        <label for="clientName">Nombre del cliente</label>
+        <input type="text" id="clientName" maxlength="80" placeholder="Ej. Restaurante La Esquina">
+      </div>
+      <div class="dialog-actions">
+        <button class="btn ghost" value="cancel">Cancelar</button>
+        <button class="btn primary" id="saveClientBtn" type="button">Agregar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>

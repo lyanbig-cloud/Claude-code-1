@@ -1,0 +1,7 @@
+# Claves privadas: nunca subir
+.env
+.env.*
+!.env.example
+
+# Datos locales del panel (videos, registro, subidas)
+panel-higgsfield/data/
