@@ -1,0 +1,25 @@
+{
+  "name": "lova-test",
+  "version": "1.0.0",
+  "private": true,
+  "description": "LOVA Agency — prueba de motion graphics (Remotion)",
+  "scripts": {
+    "dev": "remotion studio src/index.ts",
+    "render": "remotion render src/index.ts LovaTest out/lova-test.mp4 --codec=h264",
+    "still": "remotion still src/index.ts LovaTest",
+    "typecheck": "tsc --noEmit",
+    "extract-brand": "python3 scripts/brand/extract_paths.py assets/manual.pdf src/brand/paths.ts"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.534",
+    "@remotion/google-fonts": "4.0.534",
+    "@remotion/paths": "4.0.534",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "remotion": "4.0.534"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "typescript": "^5.6.0"
+  }
+}

@@ -1,0 +1,5 @@
+node_modules/
+out/
+.env
+# Manual de marca del cliente: se trabaja local, no se versiona.
+assets/*.pdf
