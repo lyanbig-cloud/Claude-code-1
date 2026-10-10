@@ -46,3 +46,40 @@ npm run render     # → out/calendario-entrega.mp4
 
 Para cambiar el escenario, reemplaza `scripts/referencia.jpg` y ejecuta
 `python scripts/bake_plates.py scripts/referencia.jpg public`.
+
+---
+
+# Calendario navideño (composición `CalendarioNavidad`)
+
+**9 s a 24 fps (216 frames), 2160 × 3840.** Octubre, noviembre y diciembre de 2026, construidos
+en código: las cuadrículas salen de la fecha real (el 1 de octubre de 2026 cae en jueves, el 1 de
+noviembre en domingo y el 1 de diciembre en martes). Los domingos van en rojo, como en la
+referencia.
+
+```
+npx remotion render src/index.ts CalendarioNavidad out/calendario-navidad.mp4
+```
+
+| Frames | Evento |
+|---|---|
+| 0 → 92 | Octubre; acercamiento lento que se inclina hacia el día marcado |
+| 22 → 44 | Se dibuja a mano un círculo rojo alrededor del 31 de octubre |
+| 40 → 92 | «FECHA RECOMENDADA PARA ENVIAR» (y debajo «31 DE OCTUBRE», opcional) |
+| 100 → 128 | La hoja pasa a noviembre (giro 3D con curvatura de papel) |
+| 136 → 164 | La hoja pasa a diciembre |
+| 160 → 204 | La cámara se acerca al 24 de diciembre |
+| 178 → 198 | Círculo discreto alrededor del 24 |
+| 188 → 215 | «OBJETIVO» · «RECIBIR ANTES DE NAVIDAD» |
+
+- **Fondo y primer plano:** `scripts/bake_navidad.py` parte de la imagen de referencia. Borra
+  el calendario original con un relleno suave y deja la bandera, la ventana, el árbol y los
+  regalos como formas desenfocadas. El mapa y el pasaporte quedan en primer plano.
+- **Papel envejecido:** fibras, manchas cálidas y bordes algo más oscuros. Las espirales son de
+  latón y el círculo de marcador se funde con el papel como tinta.
+- **Cámara:** el fondo, el calendario y el primer plano se mueven a ritmos distintos, lo que da
+  profundidad. El acercamiento al 24 calcula su posición con la misma perspectiva 3D del
+  calendario.
+- **Todo es editable** (`src/navidad/schema.ts`): páginas (mes y año), días marcados y en qué
+  página, textos (con salto de línea), colores, tiempos, zoom final e inclinación.
+- **Sin garantía de entrega:** el texto presenta el 31 de octubre como fecha *recomendada* para
+  enviar, y la Navidad como *objetivo*, no como garantía.
