@@ -86,3 +86,38 @@ python scripts/verify_routes.py <data> src/geo/geography.json
 Atribución del relieve (Terrain Tiles): SRTM (NASA/USGS), GMTED2010 (USGS), ETOPO1 (NOAA);
 consulta la lista completa en https://github.com/tilezen/joerd/blob/master/docs/attribution.md.
 Natural Earth es de dominio público (naturalearthdata.com).
+
+---
+
+# Florida → Caribe (composición `FloridaCaribe`)
+
+**8 s a 24 fps (192 frames), 2160 × 3840.** Usa la misma base cartográfica, extendida con capas de
+alta resolución sobre Florida (`z9fl`, `z10fl`).
+
+```
+npx remotion render src/index.ts FloridaCaribe out/florida-caribe.mp4
+```
+
+| Frames | Evento |
+|---|---|
+| 0 → 86 | Florida en plano cercano con un acercamiento muy lento |
+| 8 | Marcador en Tampa con la etiqueta «SALIDA MIÉRCOLES» |
+| 22 → 76 | La línea cálida se dibuja hasta Miami siguiendo la red real de autopistas, con el camión al frente |
+| 72 | Marcador en Miami con la etiqueta «SALIDA SÁBADO» |
+| 86 → 178 | Alejamiento continuo hasta revelar el Caribe; el foco avanza en proporción al cambio de escala, para que no haya bandazos |
+| 96 → 172 | Se dibuja la ruta marítima ilustrativa hacia La Guaira |
+| 100 → 191 | El buque arranca suave y sigue navegando hasta el último frame |
+| 166 | Marcador de destino (La Guaira, Venezuela); se puede ocultar |
+
+- **Tramo en camión:** `scripts/build_road.py` calcula el camino más corto sobre las autopistas
+  de Natural Earth 10m `roads` (I-275 / I-75 «Alligator Alley»): **443 km**, cerca de los ~450 km
+  reales. El resultado se guarda en `src/geo/road_tampa_miami.json`.
+- **Ruta marítima (ilustrativa):** Miami → Estrecho de Florida → Canal Viejo de Bahamas → Paso de los
+  Vientos → Canal de Jamaica → Mar Caribe → La Guaira. Comprobada sobre agua (901 muestras, 0 en
+  tierra) con `scripts/verify_routes.py <data> src/geo/florida.json`.
+- **Puertos:** Natural Earth 10m `ports`: Tampa `ne_id 1730089655`, Miami `ne_id 1730089653`,
+  La Guaira `ne_id 1730089331`.
+- **Textos, colores, tiempos, cámara y rótulos:** se editan en `src/floridaSchema.ts` o desde el
+  panel de Studio.
+- **Vehículos:** son capas SVG vistas desde arriba (`src/layers/Vehicles.tsx`), orientadas según la
+  tangente de la ruta en cada frame.

@@ -12,7 +12,10 @@ from shapely.ops import unary_union
 from shapely.prepared import prep
 
 DATA, GEO = sys.argv[1], sys.argv[2]
-clip = box(-80, 4, -60, 23)
+geo = json.load(open(GEO))
+allpts = [p for r in geo["routes"].values() for p in r["points"]] + [p["coord"] for p in geo["places"].values()]
+xs, ys = [p[0] for p in allpts], [p[1] for p in allpts]
+clip = box(min(xs) - 1, min(ys) - 1, max(xs) + 1, max(ys) + 1)
 polys = []
 for name in ("ne_10m_land.geojson", "ne_10m_minor_islands.geojson"):
     for f in json.load(open(os.path.join(DATA, name)))["features"]:
@@ -36,7 +39,6 @@ def catmull_rom(pts, n=60):
     return np.array(out)
 
 
-geo = json.load(open(GEO))
 ok = True
 for name, r in geo["routes"].items():
     s = catmull_rom(r["points"])

@@ -11,7 +11,7 @@ from shapely.geometry import shape, box
 from shapely.ops import unary_union, linemerge
 
 DATA, OUT = sys.argv[1], sys.argv[2]
-BBOX = (-84.0, -3.0, -52.0, 27.0)
+BBOX = (-90.0, -3.0, -52.0, 33.0)
 WORLD_SCALE = 1000
 TOL = 0.003  # degrees, ~330 m: sub-pixel at the closest framing
 
@@ -73,6 +73,7 @@ def adm0(p):
 land_borders = clipped(features("ne_10m_admin_0_boundary_lines_land.geojson"))
 ven_borders = clipped(features("ne_10m_admin_0_boundary_lines_land.geojson"), lambda p: "VEN" in adm0(p))
 other_borders = clipped(features("ne_10m_admin_0_boundary_lines_land.geojson"), lambda p: "VEN" not in adm0(p))
+us_states = clipped(features("ne_10m_admin_1_states_provinces_lines.geojson"), lambda p: p.get("ADM0_A3") == "USA")
 ven_states = clipped(features("ne_10m_admin_1_states_provinces_lines.geojson"), lambda p: p.get("ADM0_A3") == "VEN")
 coast = clipped(features("ne_10m_coastline.geojson"))
 
@@ -87,6 +88,7 @@ json.dump(
         "venezuelaBorder": to_path(ven_borders),
         "otherBorders": to_path(other_borders),
         "venezuelaStates": to_path(ven_states),
+        "usStates": to_path(us_states),
         "coastline": to_path(coast),
         "venezuelaOutline": to_path([ven_outline]),
     },

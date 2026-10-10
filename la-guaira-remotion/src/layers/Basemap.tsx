@@ -42,14 +42,22 @@ const RasterLayer: React.FC<{layer: Layer; view: View; opacity?: number; feather
 	);
 };
 
-/** Pixels per degree at which each finer layer is fully faded in. */
+const ramp = (ppd: number, a: number, b: number) =>
+	interpolate(ppd, [a, b], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+
+/**
+ * All baked layers from the manifest, coarse to fine. Finer layers fade in
+ * once the camera is close enough to need them (pixels per degree).
+ */
 export const Basemap: React.FC<{view: View; ppd: number}> = ({view, ppd}) => {
-	const z9 = interpolate(ppd, [170, 230], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+	const layers = (Object.values(manifest) as Layer[]).sort((a, b) => a.zoom - b.zoom);
 	return (
 		<>
-			<RasterLayer layer={manifest.z6} view={view} />
-			<RasterLayer layer={manifest.z8} view={view} featherPct={4} />
-			<RasterLayer layer={manifest.z9} view={view} opacity={z9} featherPct={6} />
+			{layers.map((layer) => {
+				const opacity = layer.zoom <= 8 ? 1 : layer.zoom === 9 ? ramp(ppd, 170, 230) : ramp(ppd, 330, 420);
+				const featherPct = layer.zoom === 6 ? undefined : layer.zoom === 8 ? 4 : 6;
+				return <RasterLayer key={layer.file} layer={layer} view={view} opacity={opacity} featherPct={featherPct} />;
+			})}
 		</>
 	);
 };

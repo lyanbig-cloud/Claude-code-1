@@ -29,6 +29,7 @@ export const Borders: React.FC<{view: View; borderColor: string}> = ({view, bord
 			<svg style={svgBox} viewBox={viewBox}>
 				<g transform={g}>
 					<path d={vectors.coastline} stroke="rgba(255,238,210,0.28)" strokeWidth={2} {...line} />
+					<path d={vectors.usStates} stroke="rgba(255,232,196,0.2)" strokeWidth={2} strokeDasharray="10 9" {...line} />
 					<path d={vectors.venezuelaStates} stroke="rgba(255,232,196,0.16)" strokeWidth={2} strokeDasharray="10 9" {...line} />
 					<path d={vectors.otherBorders} stroke="rgba(244,224,192,0.38)" strokeWidth={2.6} {...line} />
 					<path d={vectors.venezuelaBorder} stroke={borderColor} strokeWidth={4} opacity={0.88} {...line} />

@@ -25,8 +25,8 @@ os.makedirs(OUT, exist_ok=True)
 # ---------------------------------------------------------------- look ----
 SUN_AZIMUTH = 30.0      # degrees clockwise from north: light from the NNE,
 SUN_ALTITUDE = 38.0     # matching the reference's top-right amber sun.
-LAND_EXAGGERATION = {6: 4.0, 8: 2.6, 9: 2.0}
-SEA_EXAGGERATION = {6: 10.0, 8: 7.0, 9: 6.0}
+LAND_EXAGGERATION = {6: 4.0, 8: 2.6, 9: 2.0, 10: 1.7}
+SEA_EXAGGERATION = {6: 10.0, 8: 7.0, 9: 6.0, 10: 5.0}
 
 # Ocean palette indexed by depth in metres (petrol blue, turquoise shelves).
 OCEAN_STOPS = [

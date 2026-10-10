@@ -5,8 +5,11 @@ import math
 # fixed tile zoom; extents are in degrees (west, south, east, north).
 LAYERS = {
     "z6": dict(zoom=6, bbox=(-104.0, -22.0, -36.0, 42.0)),
-    "z8": dict(zoom=8, bbox=(-82.0, -1.0, -54.0, 25.0)),
+    "z8": dict(zoom=8, bbox=(-88.5, -1.0, -54.0, 31.8)),
     "z9": dict(zoom=9, bbox=(-74.5, 4.6, -63.0, 13.8)),
+    # Florida close-ups (Tampa -> Miami truck leg).
+    "z9fl": dict(zoom=9, bbox=(-85.0, 23.6, -78.6, 29.8)),
+    "z10fl": dict(zoom=10, bbox=(-83.3, 24.9, -79.5, 28.6)),
 }
 TILE = 256
 

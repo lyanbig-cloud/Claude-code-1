@@ -41,23 +41,29 @@ export type PinProps = {
 	title: string;
 	subtitle: string;
 	coordLine?: string;
+	/** Optional highlighted caption under the title (e.g. a departure day). */
+	tag?: string;
+	tagColor?: string;
 	side: 'izquierda' | 'derecha';
 	stem: number;
 	/** Frames since the pin started to appear (negative = hidden). */
 	t: number;
 	dim?: number;
+	/** Overall size, e.g. smaller when the camera pulls far out. */
+	scale?: number;
 };
 
 /** Upright pin standing on the map, with its label. Lives outside the tilted plane. */
-export const Pin: React.FC<PinProps> = ({view, coord, color, textColor, title, subtitle, coordLine, side, stem, t, dim = 0}) => {
+export const Pin: React.FC<PinProps> = ({view, coord, color, textColor, title, subtitle, coordLine, tag, tagColor, side, stem, t, dim = 0, scale = 1}) => {
 	if (t < 0) return null;
 	const p = view.screen(coord);
 	const rise = interpolate(t, [0, 14], [0, 1], {...clamp, easing: (x) => 1 - Math.pow(1 - x, 3)});
 	const text = interpolate(t, [8, 22], [0, 1], clamp);
+	const tagIn = interpolate(t, [14, 28], [0, 1], {...clamp, easing: (x) => 1 - Math.pow(1 - x, 3)});
 	const h = stem * rise;
 	const left = side === 'izquierda';
 	return (
-		<div style={{position: 'absolute', left: p.x, top: p.y, opacity: 1 - dim * 0.35}}>
+		<div style={{position: 'absolute', left: p.x, top: p.y, opacity: 1 - dim * 0.35, transform: `scale(${scale})`, transformOrigin: '0 0'}}>
 			{/* Stem */}
 			<div
 				style={{
@@ -104,6 +110,31 @@ export const Pin: React.FC<PinProps> = ({view, coord, color, textColor, title, s
 				<div style={{fontFamily: BODY_FONT, fontWeight: 500, fontSize: 36, letterSpacing: '0.04em', marginTop: 10, opacity: 0.86}}>
 					{subtitle}
 				</div>
+				{tag && (
+					<div
+						style={{
+							display: 'inline-block',
+							marginTop: 16,
+							padding: '12px 22px 10px',
+							borderRadius: 6,
+							background: 'rgba(16,24,28,0.62)',
+							borderLeft: left ? 'none' : `5px solid ${tagColor ?? color}`,
+							borderRight: left ? `5px solid ${tagColor ?? color}` : 'none',
+							fontFamily: TITLE_FONT,
+							fontWeight: 600,
+							fontSize: 50,
+							letterSpacing: '0.12em',
+							lineHeight: 1,
+							color: textColor,
+							textShadow: 'none',
+							opacity: tagIn,
+							transform: `translateX(${(1 - tagIn) * (left ? 18 : -18)}px)`,
+							clipPath: left ? `inset(0 0 0 ${(1 - tagIn) * 100}%)` : `inset(0 ${(1 - tagIn) * 100}% 0 0)`,
+						}}
+					>
+						{tag}
+					</div>
+				)}
 				{coordLine && (
 					<div style={{fontFamily: BODY_FONT, fontWeight: 400, fontSize: 30, letterSpacing: '0.06em', marginTop: 6, opacity: 0.66}}>
 						{coordLine}

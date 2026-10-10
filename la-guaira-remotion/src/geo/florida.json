@@ -1,0 +1,14 @@
+{
+  "_doc": "Geografía del video Florida → Caribe. Coordenadas [longitud, latitud] WGS84. Puertos: Natural Earth 10m 'ports' (ne_id verificable). La ruta marítima es ILUSTRATIVA y se comprueba sobre agua con scripts/verify_routes.py.",
+  "places": {
+    "tampa": {"coord": [-82.43616, 27.93], "source": "Natural Earth 10m ports · 'Tampa' · ne_id 1730089655"},
+    "miami": {"coord": [-80.16702, 25.775], "source": "Natural Earth 10m ports · 'Miami' · ne_id 1730089653"},
+    "laGuaira": {"coord": [-66.940224, 10.602778], "source": "Natural Earth 10m ports · 'La Guaira' · ne_id 1730089331"}
+  },
+  "routes": {
+    "sea": {
+      "_doc": "Miami → Estrecho de Florida → Canal Viejo de Bahamas → Paso de los Vientos → Mar Caribe → La Guaira.",
+      "points": [[-80.13, 25.77], [-79.85, 25.55], [-79.6, 24.6], [-78.9, 23.35], [-77.3, 22.55], [-75.6, 21.75], [-74.0, 20.6], [-73.82, 19.85], [-74.3, 19.0], [-74.72, 18.3], [-74.0, 17.2], [-72.2, 15.8], [-70.2, 14.3], [-67.6, 11.6], [-66.95, 10.78], [-66.94, 10.618]]
+    }
+  }
+}

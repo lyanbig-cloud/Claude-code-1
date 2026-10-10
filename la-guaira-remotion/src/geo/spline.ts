@@ -27,8 +27,8 @@ export const catmullRom = (pts: LonLat[], n = 60): LonLat[] => {
 	return out;
 };
 
-export const makeRoute = (waypoints: LonLat[]): Route => {
-	const points = catmullRom(waypoints).map(toWorld);
+export const makeRoute = (waypoints: LonLat[], samplesPerSegment = 60): Route => {
+	const points = catmullRom(waypoints, samplesPerSegment).map(toWorld);
 	const lengths = [0];
 	for (let i = 1; i < points.length; i++) {
 		const [ax, ay] = points[i - 1];
