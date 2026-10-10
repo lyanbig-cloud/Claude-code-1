@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react';
-import {AbsoluteFill, Easing, Img, continueRender, delayRender, interpolate, random, staticFile, useCurrentFrame} from 'remotion';
+import {AbsoluteFill, Easing, Img, continueRender, delayRender, interpolate, random, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
+import caja from '../public/caja.json';
 import {CONDENSED, SERIF} from './fonts';
 import {Props} from './schema';
 
@@ -7,7 +8,6 @@ import {Props} from './schema';
 // SVG scales it onto the plate, so lines stay locked to the box.
 const PHOTO_W = 941;
 const PHOTO_H = 1671;
-const FOCUS = '48% 53%'; // camera push centred on the box
 
 type Pt = [number, number];
 type Measure = Props['medidas']['ancho'];
@@ -16,6 +16,67 @@ const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;
 const prog = (f: number, a: number, b: number, easing: (t: number) => number = (t) => t) =>
 	interpolate(f, [a, b], [0, 1], {...clamp, easing});
 const lerp = (a: Pt, b: Pt, t: number): Pt => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
+
+const drawProgress = (frame: number, t0: number, d: number) => prog(frame, t0, t0 + d, Easing.bezier(0.45, 0, 0.2, 1));
+
+/** Box height above the floor (photo px): ease up, then a slow float. */
+const liftAt = (frame: number, c: Props['caja']) =>
+	c.elevacion * prog(frame, 0, c.finElevacion, Easing.bezier(0.3, 0, 0.15, 1)) +
+	c.flotacion * Math.sin((frame - c.finElevacion) / 13) * prog(frame, c.finElevacion - 8, c.finElevacion + 14);
+
+type Cam = {x: number; y: number; z: number};
+
+/**
+ * Where the camera wants to be on a given frame: wide while the box rises,
+ * then close on each dimension's drawing head, settling on the whole line as
+ * its label appears, and wide again at the end.
+ */
+const camTarget = (f: number, p: Props): Cam => {
+	const wide: Cam = {x: PHOTO_W / 2, y: PHOTO_H * 0.53, z: 1};
+	const {zoomSeguimiento: z} = p.camara;
+	const d = p.tiempos.duracionLinea;
+	const lift = liftAt(f, p.caja);
+	for (const m of [p.medidas.ancho, p.medidas.alto, p.medidas.profundidad]) {
+		const t0 = m.inicio;
+		if (f < t0 - 2 || f > t0 + d + 14) continue;
+		const a = m.desde as Pt;
+		const b = m.hasta as Pt;
+		// Lead slightly ahead of the head so the line draws into frame.
+		const lead = lerp(a, b, Math.min(1, drawProgress(f, t0, d) + 0.12));
+		const settle = prog(f, t0 + d - 2, t0 + d + 12, Easing.inOut(Easing.cubic));
+		const mid = lerp(a, b, 0.5);
+		const pt = lerp(lead, mid, settle);
+		return {x: pt[0], y: pt[1] - lift, z: z * (1 - 0.22 * settle)};
+	}
+	return wide;
+};
+
+/** Gaussian-smoothed camera path: deterministic per frame, no sudden moves. */
+const cameraAt = (frame: number, p: Props, last: number): Cam => {
+	const sigma = p.camara.suavidad;
+	let wx = 0;
+	let x = 0;
+	let y = 0;
+	let lz = 0;
+	for (let k = -3 * sigma; k <= 3 * sigma; k++) {
+		const f = Math.min(last, Math.max(0, frame + k));
+		const w = Math.exp(-(k * k) / (2 * sigma * sigma));
+		const c = camTarget(f, p);
+		x += c.x * w;
+		y += c.y * w;
+		lz += Math.log(c.z) * w;
+		wx += w;
+	}
+	const z = Math.exp(lz / wx);
+	// Never show past the photo's edges.
+	const hw = PHOTO_W / (2 * z);
+	const hh = PHOTO_H / (2 * z);
+	return {
+		x: Math.min(PHOTO_W - hw, Math.max(hw, x / wx)),
+		y: Math.min(PHOTO_H - hh, Math.max(hh, y / wx)),
+		z,
+	};
+};
 
 const GRAIN = [0, 1, 2, 3, 4, 5].map((i) => staticFile(`grano${i}.png`));
 
@@ -44,7 +105,7 @@ const Dimension: React.FC<{m: Measure; frame: number; duration: number; line: st
 }) => {
 	const t0 = m.inicio;
 	const ext = prog(frame, t0 - 4, t0 + 8, Easing.out(Easing.cubic));
-	const draw = prog(frame, t0, t0 + duration, Easing.bezier(0.45, 0, 0.2, 1));
+	const draw = drawProgress(frame, t0, duration);
 	const heads = prog(frame, t0 + duration - 6, t0 + duration + 4, Easing.out(Easing.back(1.8)));
 	const label = prog(frame, t0 + duration - 8, t0 + duration + 12, Easing.out(Easing.cubic));
 	const glint = draw > 0 && draw < 1 ? Math.sin(Math.PI * draw) : 0;
@@ -128,7 +189,15 @@ export const MedidasCaja: React.FC<Props> = (props) => {
 		);
 	}, [handle]);
 
-	const push = 1 + (props.camara.acercamiento - 1) * prog(frame, 0, 167, Easing.bezier(0.3, 0, 0.4, 1));
+	const {width, height, durationInFrames} = useVideoConfig();
+	const sx = width / PHOTO_W;
+	const sy = height / PHOTO_H;
+	const lift = liftAt(frame, props.caja);
+	const cam = cameraAt(frame, props, durationInFrames - 1);
+	const camTransform = `translate(${width / 2 - cam.z * cam.x * sx}px, ${height / 2 - cam.z * cam.y * sy}px) scale(${cam.z})`;
+	// Shadow on the floor: sharp and dense on contact, softer and wider as the box rises.
+	const liftK = lift / 40;
+	const foot = (caja.footprint as Pt[]).map((q) => q.join(',')).join(' ');
 	// Measurements recede a touch when the statement arrives.
 	const dim = textos.mostrarTitulo ? 1 - 0.28 * prog(frame, t.titulo - 4, t.titulo + 20) : 1;
 
@@ -144,18 +213,32 @@ export const MedidasCaja: React.FC<Props> = (props) => {
 
 	return (
 		<AbsoluteFill style={{backgroundColor: '#0E0905', overflow: 'hidden'}}>
-			{/* Photo plate and measurements move together, so they stay registered */}
-			<AbsoluteFill style={{transform: `scale(${push})`, transformOrigin: FOCUS}}>
-				<Img src={staticFile('placa.jpg')} style={{width: '100%', height: '100%'}} />
+			{/* Camera: background, shadow, box and measurements move as one scene */}
+			<AbsoluteFill style={{transform: camTransform, transformOrigin: '0 0'}}>
+				<Img src={staticFile('fondo.jpg')} style={{width: '100%', height: '100%'}} />
+				<svg viewBox={`0 0 ${PHOTO_W} ${PHOTO_H}`} preserveAspectRatio="none" style={{position: 'absolute', inset: 0, width: '100%', height: '100%'}}>
+					<defs>
+						<filter id="shadow" x="-0.5" y="-0.5" width="2" height="2">
+							<feGaussianBlur stdDeviation={3 + 24 * liftK} />
+						</filter>
+					</defs>
+					<polygon points={foot} fill="#0A0502" opacity={0.8 - 0.42 * liftK} filter="url(#shadow)" transform={`translate(0 ${8 * liftK})`} />
+				</svg>
+				<Img
+					src={staticFile('caja.png')}
+					style={{position: 'absolute', left: caja.x, top: caja.y - lift * sy, width: caja.width, height: caja.height}}
+				/>
 				<svg viewBox={`0 0 ${PHOTO_W} ${PHOTO_H}`} preserveAspectRatio="none" style={{position: 'absolute', inset: 0, width: '100%', height: '100%'}}>
 					<defs>
 						<filter id="soft" x="-2" y="-2" width="5" height="5">
 							<feGaussianBlur stdDeviation="3" />
 						</filter>
 					</defs>
+					<g transform={`translate(0 ${-lift})`}>
 					<Dimension m={md.ancho} frame={frame} duration={t.duracionLinea} line={col.linea} gold={col.dorado} dim={dim} showLabel={textos.mostrarEtiquetas} />
 					<Dimension m={md.alto} frame={frame} duration={t.duracionLinea} line={col.linea} gold={col.dorado} dim={dim} showLabel={textos.mostrarEtiquetas} />
 					<Dimension m={md.profundidad} frame={frame} duration={t.duracionLinea} line={col.linea} gold={col.dorado} dim={dim} showLabel={textos.mostrarEtiquetas} />
+					</g>
 				</svg>
 			</AbsoluteFill>
 

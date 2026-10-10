@@ -42,7 +42,17 @@ export const schema = z.object({
 		subtitulo: z.number(),
 	}),
 	camara: z.object({
-		acercamiento: z.number().min(1).max(1.3),
+		/** Zoom while the camera follows each line as it is drawn. */
+		zoomSeguimiento: z.number().min(1).max(2.5),
+		/** Frames the camera takes to glide between targets (higher = softer). */
+		suavidad: z.number().min(2).max(14),
+	}),
+	caja: z.object({
+		/** How high the box rises, in photo px. Max 40 (limit of the rebuilt floor). */
+		elevacion: z.number().min(0).max(40),
+		finElevacion: z.number(),
+		/** Floating bob amplitude, photo px. */
+		flotacion: z.number().min(0).max(8),
 	}),
 	grano: z.number().min(0).max(0.3),
 });
@@ -60,7 +70,7 @@ export const defaultProps: Props = {
 				[[803, 1064], [803, 1112]],
 			],
 			separacionTexto: 30,
-			inicio: 14,
+			inicio: 36,
 		},
 		alto: {
 			texto: 'ALTO',
@@ -71,7 +81,7 @@ export const defaultProps: Props = {
 				[[812, 627], [866, 627]],
 			],
 			separacionTexto: 26,
-			inicio: 40,
+			inicio: 68,
 		},
 		profundidad: {
 			texto: 'PROFUNDIDAD',
@@ -82,13 +92,13 @@ export const defaultProps: Props = {
 				[[95, 1010], [95, 1050]],
 			],
 			separacionTexto: 30,
-			inicio: 66,
+			inicio: 100,
 		},
 	},
 	textos: {
 		titulo: 'EL TAMAÑO Y EL DESTINO\nDETERMINAN LA TARIFA',
 		subtitulo: 'NO EL PESO',
-		mostrarTitulo: true,
+		mostrarTitulo: false,
 		mostrarEtiquetas: true,
 	},
 	colores: {
@@ -97,12 +107,18 @@ export const defaultProps: Props = {
 		titulo: '#F7EEDF',
 	},
 	tiempos: {
-		duracionLinea: 26,
-		titulo: 106,
-		subtitulo: 128,
+		duracionLinea: 24,
+		titulo: 146,
+		subtitulo: 156,
 	},
 	camara: {
-		acercamiento: 1.05,
+		zoomSeguimiento: 1.75,
+		suavidad: 7,
+	},
+	caja: {
+		elevacion: 26,
+		finElevacion: 30,
+		flotacion: 2.5,
 	},
 	grano: 0.05,
 };
