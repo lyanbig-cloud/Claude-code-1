@@ -1,0 +1,32 @@
+{
+  "_doc": "Única fuente de verdad geográfica. Coordenadas en grados decimales [longitud, latitud] (WGS84). Los puertos provienen de Natural Earth 10m 'ports' (derivado del World Port Index de la NGA); el ne_id permite verificarlos. Las rutas son ILUSTRATIVAS: puntos de paso sobre agua comprobados contra la costa de Natural Earth 10m con scripts/verify_routes.py.",
+  "places": {
+    "laGuaira": {
+      "coord": [-66.940224, 10.602778],
+      "source": "Natural Earth 10m ports · 'La Guaira' · ne_id 1730089331"
+    },
+    "puertoCabello": {
+      "coord": [-67.993051, 10.477222],
+      "source": "Natural Earth 10m ports · 'Puerto Cabello' · ne_id 1730088995"
+    },
+    "maracaibo": {
+      "coord": [-71.58828, 10.683611],
+      "source": "Natural Earth 10m ports · 'Maracaibo' (estado Zulia) · ne_id 1730089333"
+    }
+  },
+  "routes": {
+    "main": {
+      "_doc": "Ruta ilustrativa de aproximación desde el norte (Paso de la Mona) hasta La Guaira. `cut` es el punto donde se representa la interrupción.",
+      "points": [[-68.0, 21.5], [-68.1, 18.6], [-68.2, 17.4], [-68.35, 15.4], [-67.9, 12.9], [-67.2, 11.6], [-66.95, 10.78], [-66.94, 10.618]],
+      "cut": [-67.45, 12.05]
+    },
+    "toPuertoCabello": {
+      "_doc": "Alternativa 1: desvío desde el punto de bifurcación hacia Puerto Cabello (pasa al este de Bonaire).",
+      "points": [[-67.9, 12.9], [-68.02, 11.6], [-68.0, 10.9], [-67.993, 10.495]]
+    },
+    "toZulia": {
+      "_doc": "Alternativa 2: por el norte de Curazao y Aruba, rodea la península de Paraguaná, cruza el Golfo de Venezuela y entra por el estrecho de Maracaibo.",
+      "points": [[-67.9, 12.9], [-69.1, 12.9], [-70.3, 12.75], [-70.75, 12.2], [-71.15, 11.55], [-71.48, 11.2], [-71.56, 10.97], [-71.6, 10.86], [-71.565, 10.75], [-71.578, 10.692]]
+    }
+  }
+}
