@@ -28,6 +28,8 @@ export const schema = z.object({
 	textos: z.object({
 		titulo: z.string().describe('Usa \\n para elegir el salto de línea'),
 		subtitulo: z.string(),
+		mostrarTitulo: z.boolean().describe('Título y subtítulo finales'),
+		mostrarEtiquetas: z.boolean().describe('ANCHO / ALTO / PROFUNDIDAD'),
 	}),
 	colores: z.object({
 		linea: zColor(),
@@ -86,6 +88,8 @@ export const defaultProps: Props = {
 	textos: {
 		titulo: 'EL TAMAÑO Y EL DESTINO\nDETERMINAN LA TARIFA',
 		subtitulo: 'NO EL PESO',
+		mostrarTitulo: true,
+		mostrarEtiquetas: true,
 	},
 	colores: {
 		linea: '#F7ECDC',

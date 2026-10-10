@@ -33,13 +33,14 @@ const chevron = (tip: Pt, dx: number, dy: number, size: number) => {
 };
 
 /** One dimension: witness lines, the drawn line, arrowheads, gold details and its label. */
-const Dimension: React.FC<{m: Measure; frame: number; duration: number; line: string; gold: string; dim: number}> = ({
+const Dimension: React.FC<{m: Measure; frame: number; duration: number; line: string; gold: string; dim: number; showLabel: boolean}> = ({
 	m,
 	frame,
 	duration,
 	line,
 	gold,
 	dim,
+	showLabel,
 }) => {
 	const t0 = m.inicio;
 	const ext = prog(frame, t0 - 4, t0 + 8, Easing.out(Easing.cubic));
@@ -93,7 +94,7 @@ const Dimension: React.FC<{m: Measure; frame: number; duration: number; line: st
 				</>
 			)}
 			{/* Label aligned with the dimension, as in a technical drawing */}
-			{label > 0 && (
+			{showLabel && label > 0 && (
 				<g transform={`translate(${lp[0]} ${lp[1]}) rotate(${angle})`} opacity={label}>
 					<text
 						x={0}
@@ -129,7 +130,7 @@ export const MedidasCaja: React.FC<Props> = (props) => {
 
 	const push = 1 + (props.camara.acercamiento - 1) * prog(frame, 0, 167, Easing.bezier(0.3, 0, 0.4, 1));
 	// Measurements recede a touch when the statement arrives.
-	const dim = 1 - 0.28 * prog(frame, t.titulo - 4, t.titulo + 20);
+	const dim = textos.mostrarTitulo ? 1 - 0.28 * prog(frame, t.titulo - 4, t.titulo + 20) : 1;
 
 	const title = prog(frame, t.titulo, t.titulo + 26, Easing.bezier(0.16, 1, 0.3, 1));
 	const sub = prog(frame, t.subtitulo, t.subtitulo + 22, Easing.out(Easing.cubic));
@@ -152,13 +153,15 @@ export const MedidasCaja: React.FC<Props> = (props) => {
 							<feGaussianBlur stdDeviation="3" />
 						</filter>
 					</defs>
-					<Dimension m={md.ancho} frame={frame} duration={t.duracionLinea} line={col.linea} gold={col.dorado} dim={dim} />
-					<Dimension m={md.alto} frame={frame} duration={t.duracionLinea} line={col.linea} gold={col.dorado} dim={dim} />
-					<Dimension m={md.profundidad} frame={frame} duration={t.duracionLinea} line={col.linea} gold={col.dorado} dim={dim} />
+					<Dimension m={md.ancho} frame={frame} duration={t.duracionLinea} line={col.linea} gold={col.dorado} dim={dim} showLabel={textos.mostrarEtiquetas} />
+					<Dimension m={md.alto} frame={frame} duration={t.duracionLinea} line={col.linea} gold={col.dorado} dim={dim} showLabel={textos.mostrarEtiquetas} />
+					<Dimension m={md.profundidad} frame={frame} duration={t.duracionLinea} line={col.linea} gold={col.dorado} dim={dim} showLabel={textos.mostrarEtiquetas} />
 				</svg>
 			</AbsoluteFill>
 
 			{/* ---- Statement ---- */}
+			{textos.mostrarTitulo && (
+			<>
 			<AbsoluteFill
 				style={{
 					background: 'linear-gradient(to bottom, rgba(8,5,2,0.55) 0%, rgba(8,5,2,0.35) 22%, rgba(8,5,2,0) 34%)',
@@ -217,6 +220,9 @@ export const MedidasCaja: React.FC<Props> = (props) => {
 					<div style={{height: 3, width: 170 * rule, background: col.dorado}} />
 				</div>
 			</div>
+
+			</>
+			)}
 
 			{/* Light vignette and film grain; the photo's own lighting is untouched */}
 			<AbsoluteFill style={{background: 'radial-gradient(ellipse 85% 70% at 50% 52%, rgba(0,0,0,0) 60%, rgba(0,0,0,0.35) 100%)'}} />
