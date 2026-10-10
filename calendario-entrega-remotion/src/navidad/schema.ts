@@ -18,6 +18,7 @@ export const navidadSchema = z.object({
 		objetivo: z.object({pagina: z.number().int().min(0), dia: z.number().int().min(1).max(31)}),
 	}),
 	textos: z.object({
+		mostrar: z.boolean().describe('Mostrar los textos en pantalla'),
 		envio: z.string().describe('Usa \\n para el salto de línea'),
 		envioDetalle: z.string().describe('Línea pequeña bajo el texto (vacía = no se muestra)'),
 		objetivoEtiqueta: z.string(),
@@ -68,6 +69,7 @@ export const navidadDefaults: NavidadProps = {
 		objetivo: {pagina: 2, dia: 24},
 	},
 	textos: {
+		mostrar: true,
 		envio: 'FECHA RECOMENDADA\nPARA ENVIAR',
 		envioDetalle: '31 DE OCTUBRE',
 		objetivoEtiqueta: 'OBJETIVO',

@@ -157,7 +157,7 @@ export const CalendarioNavidad: React.FC<NavidadProps> = (props) => {
 	const sendOut = prog(frame, t.salidaTextoEnvio, t.salidaTextoEnvio + 10, Easing.in(Easing.cubic));
 	const sendDetail = prog(frame, t.textoEnvio + 16, t.textoEnvio + 34, Easing.out(Easing.cubic));
 	const goalKicker = prog(frame, t.textoObjetivo - 4, t.textoObjetivo + 14, Easing.out(Easing.cubic));
-	const scrim = Math.max(prog(frame, t.textoEnvio - 10, t.textoEnvio + 12) * (1 - sendOut), prog(frame, t.textoObjetivo - 12, t.textoObjetivo + 10));
+	const scrim = !tx.mostrar ? 0 : Math.max(prog(frame, t.textoEnvio - 10, t.textoEnvio + 12) * (1 - sendOut), prog(frame, t.textoObjetivo - 12, t.textoObjetivo + 10));
 
 	const shadowOn = (i: number) => {
 		if (i === 0) return 0;
@@ -288,7 +288,7 @@ export const CalendarioNavidad: React.FC<NavidadProps> = (props) => {
 
 			{/* ---- Texts ---- */}
 			<AbsoluteFill style={{background: 'linear-gradient(to bottom, rgba(14,7,3,0.62) 0%, rgba(14,7,3,0.4) 20%, rgba(14,7,3,0) 34%)', opacity: scrim}} />
-			{frame >= t.textoEnvio && sendOut < 1 && (
+			{tx.mostrar && frame >= t.textoEnvio && sendOut < 1 && (
 				<div style={{position: 'absolute', left: 60, right: 60, top: 470, textAlign: 'center', opacity: 1 - sendOut, transform: `translateY(${-24 * sendOut}px)`}}>
 					<Statement text={tx.envio} frame={frame} start={t.textoEnvio} color={col.texto} size={124} />
 					{tx.envioDetalle && (
@@ -302,7 +302,7 @@ export const CalendarioNavidad: React.FC<NavidadProps> = (props) => {
 					)}
 				</div>
 			)}
-			{frame >= t.textoObjetivo - 4 && (
+			{tx.mostrar && frame >= t.textoObjetivo - 4 && (
 				<div style={{position: 'absolute', left: 60, right: 60, top: 400, textAlign: 'center'}}>
 					<div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 34, marginBottom: 34, opacity: goalKicker}}>
 						<div style={{height: 3, width: 130 * goalKicker, background: col.dorado}} />
