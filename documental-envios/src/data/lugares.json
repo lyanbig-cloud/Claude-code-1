@@ -1,0 +1,274 @@
+{
+	"tampa": {
+		"nombre": "Tampa",
+		"region": "Florida",
+		"pais": "US",
+		"lat": 27.9475,
+		"lon": -82.4584,
+		"geonameId": 4174757
+	},
+	"miami": {
+		"nombre": "Miami",
+		"region": "Florida",
+		"pais": "US",
+		"lat": 25.7743,
+		"lon": -80.1937,
+		"geonameId": 4164138
+	},
+	"caracas": {
+		"nombre": "Caracas",
+		"region": "Distrito Capital",
+		"pais": "VE",
+		"lat": 10.488,
+		"lon": -66.8792,
+		"geonameId": 3646738
+	},
+	"la-guaira": {
+		"nombre": "La Guaira",
+		"region": "La Guaira",
+		"pais": "VE",
+		"lat": 10.6016,
+		"lon": -66.9329,
+		"geonameId": 3637721
+	},
+	"maracaibo": {
+		"nombre": "Maracaibo",
+		"region": "Zulia",
+		"pais": "VE",
+		"lat": 10.6666,
+		"lon": -71.6124,
+		"geonameId": 3633009
+	},
+	"valencia": {
+		"nombre": "Valencia",
+		"region": "Carabobo",
+		"pais": "VE",
+		"lat": 10.162,
+		"lon": -68.0076,
+		"geonameId": 3625549
+	},
+	"maracay": {
+		"nombre": "Maracay",
+		"region": "Aragua",
+		"pais": "VE",
+		"lat": 10.2354,
+		"lon": -67.5911,
+		"geonameId": 3632998
+	},
+	"barquisimeto": {
+		"nombre": "Barquisimeto",
+		"region": "Lara",
+		"pais": "VE",
+		"lat": 10.0647,
+		"lon": -69.357,
+		"geonameId": 3648522
+	},
+	"puerto-cabello": {
+		"nombre": "Puerto Cabello",
+		"region": "Carabobo",
+		"pais": "VE",
+		"lat": 10.4731,
+		"lon": -68.0125,
+		"geonameId": 3629706
+	},
+	"ciudad-guayana": {
+		"nombre": "Ciudad Guayana",
+		"region": "Bolívar",
+		"pais": "VE",
+		"lat": 8.3512,
+		"lon": -62.641,
+		"geonameId": 3645528
+	},
+	"ciudad-bolivar": {
+		"nombre": "Ciudad Bolívar",
+		"region": "Bolívar",
+		"pais": "VE",
+		"lat": 8.1292,
+		"lon": -63.5409,
+		"geonameId": 3645532
+	},
+	"barcelona": {
+		"nombre": "Barcelona",
+		"region": "Anzoátegui",
+		"pais": "VE",
+		"lat": 10.1363,
+		"lon": -64.6862,
+		"geonameId": 3648559
+	},
+	"puerto-la-cruz": {
+		"nombre": "Puerto La Cruz",
+		"region": "Anzoátegui",
+		"pais": "VE",
+		"lat": 10.2138,
+		"lon": -64.6328,
+		"geonameId": 3629672
+	},
+	"maturin": {
+		"nombre": "Maturín",
+		"region": "Monagas",
+		"pais": "VE",
+		"lat": 9.7457,
+		"lon": -63.1832,
+		"geonameId": 3778045
+	},
+	"cumana": {
+		"nombre": "Cumaná",
+		"region": "Sucre",
+		"pais": "VE",
+		"lat": 10.454,
+		"lon": -64.1826,
+		"geonameId": 3644768
+	},
+	"merida": {
+		"nombre": "Mérida",
+		"region": "Mérida",
+		"pais": "VE",
+		"lat": 8.5897,
+		"lon": -71.1561,
+		"geonameId": 3632308
+	},
+	"san-cristobal": {
+		"nombre": "San Cristóbal",
+		"region": "Táchira",
+		"pais": "VE",
+		"lat": 7.7669,
+		"lon": -72.225,
+		"geonameId": 3628473
+	},
+	"barinas": {
+		"nombre": "Barinas",
+		"region": "Barinas",
+		"pais": "VE",
+		"lat": 8.6226,
+		"lon": -70.2075,
+		"geonameId": 3648546
+	},
+	"coro": {
+		"nombre": "Coro",
+		"region": "Falcón",
+		"pais": "VE",
+		"lat": 11.4045,
+		"lon": -69.6734,
+		"geonameId": 3645213
+	},
+	"punto-fijo": {
+		"nombre": "Punto Fijo",
+		"region": "Falcón",
+		"pais": "VE",
+		"lat": 11.6915,
+		"lon": -70.1992,
+		"geonameId": 3629576
+	},
+	"porlamar": {
+		"nombre": "Porlamar",
+		"region": "Nueva Esparta",
+		"pais": "VE",
+		"lat": 10.9577,
+		"lon": -63.8697,
+		"geonameId": 3629965
+	},
+	"valera": {
+		"nombre": "Valera",
+		"region": "Trujillo",
+		"pais": "VE",
+		"lat": 9.3178,
+		"lon": -70.6036,
+		"geonameId": 3625542
+	},
+	"acarigua": {
+		"nombre": "Acarigua",
+		"region": "Portuguesa",
+		"pais": "VE",
+		"lat": 9.5545,
+		"lon": -69.1956,
+		"geonameId": 3649833
+	},
+	"guanare": {
+		"nombre": "Guanare",
+		"region": "Portuguesa",
+		"pais": "VE",
+		"lat": 9.0418,
+		"lon": -69.7421,
+		"geonameId": 3640226
+	},
+	"san-fernando-de-apure": {
+		"nombre": "San Fernando de Apure",
+		"region": "Apure",
+		"pais": "VE",
+		"lat": 7.8878,
+		"lon": -67.4724,
+		"geonameId": 3805673
+	},
+	"san-juan-de-los-morros": {
+		"nombre": "San Juan de los Morros",
+		"region": "Guárico",
+		"pais": "VE",
+		"lat": 9.9115,
+		"lon": -67.3538,
+		"geonameId": 3628053
+	},
+	"san-carlos": {
+		"nombre": "San Carlos",
+		"region": "Cojedes",
+		"pais": "VE",
+		"lat": 9.6612,
+		"lon": -68.5827,
+		"geonameId": 3628503
+	},
+	"san-felipe": {
+		"nombre": "San Felipe",
+		"region": "Yaracuy",
+		"pais": "VE",
+		"lat": 10.3399,
+		"lon": -68.7425,
+		"geonameId": 3628423
+	},
+	"los-teques": {
+		"nombre": "Los Teques",
+		"region": "Miranda",
+		"pais": "VE",
+		"lat": 10.3445,
+		"lon": -67.0432,
+		"geonameId": 3633622
+	},
+	"cabimas": {
+		"nombre": "Cabimas",
+		"region": "Zulia",
+		"pais": "VE",
+		"lat": 10.3991,
+		"lon": -71.4521,
+		"geonameId": 3647651
+	},
+	"el-tigre": {
+		"nombre": "El Tigre",
+		"region": "Anzoátegui",
+		"pais": "VE",
+		"lat": 8.889,
+		"lon": -64.2527,
+		"geonameId": 3641351
+	},
+	"carupano": {
+		"nombre": "Carúpano",
+		"region": "Sucre",
+		"pais": "VE",
+		"lat": 10.6652,
+		"lon": -63.2539,
+		"geonameId": 3646382
+	},
+	"tucupita": {
+		"nombre": "Tucupita",
+		"region": "Delta Amacuro",
+		"pais": "VE",
+		"lat": 9.0581,
+		"lon": -62.05,
+		"geonameId": 3625929
+	},
+	"puerto-ayacucho": {
+		"nombre": "Puerto Ayacucho",
+		"region": "Amazonas",
+		"pais": "VE",
+		"lat": 5.6605,
+		"lon": -67.5834,
+		"geonameId": 3629710
+	}
+}

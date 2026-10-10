@@ -1,0 +1,46 @@
+{
+  "name": "documental-envios-tampa-venezuela",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Motion graphics (Remotion) para documental: envíos de cajas desde Tampa, Florida, hacia Venezuela.",
+  "scripts": {
+    "dev": "remotion studio src/index.ts",
+    "typecheck": "tsc -p .",
+    "storyboard": "node scripts/storyboard.mjs",
+    "geo": "node scripts/construir-geo.mjs",
+    "render": "node scripts/render.mjs",
+    "render:01": "node scripts/render.mjs 01",
+    "render:02": "node scripts/render.mjs 02",
+    "render:03": "node scripts/render.mjs 03",
+    "render:04": "node scripts/render.mjs 04",
+    "render:05": "node scripts/render.mjs 05",
+    "render:06": "node scripts/render.mjs 06",
+    "render:07": "node scripts/render.mjs 07",
+    "render:alfa": "node scripts/render.mjs --alfa"
+  },
+  "dependencies": {
+    "@react-three/fiber": "^9.8.1",
+    "@remotion/bundler": "4.0.534",
+    "@remotion/cli": "4.0.534",
+    "@remotion/renderer": "4.0.534",
+    "@remotion/three": "4.0.534",
+    "@remotion/zod-types": "4.0.534",
+    "d3-geo": "^3.1.1",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "remotion": "4.0.534",
+    "three": "^0.180.0",
+    "topojson-client": "^3.1.0",
+    "world-atlas": "^2.0.2",
+    "zod": "^4.5.4"
+  },
+  "devDependencies": {
+    "@types/d3-geo": "^3.1.1",
+    "@types/geojson": "^7946.0.16",
+    "@types/react": "^19.3.0",
+    "@types/three": "^0.180.0",
+    "@types/topojson-client": "^3.1.5",
+    "all-the-cities": "^3.1.0",
+    "typescript": "^5.9.3"
+  }
+}
