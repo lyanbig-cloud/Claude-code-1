@@ -50,7 +50,7 @@ function el(tag, attrs = {}, ...children) {
 const money = (n) => (n === null || n === undefined ? '—' : `$${Number(n).toFixed(Math.abs(n) > 0 && Math.abs(n) < 0.1 ? 3 : 2)}`);
 
 function toast(message, type = '') {
-  const t = el('div', { class: `toast ${type}` }, message);
+  const t = el('div', { class: `toast glass ${type}` }, message);
   $('toasts').append(t);
   setTimeout(() => t.remove(), type === 'error' ? 9000 : 5000);
 }
@@ -83,6 +83,7 @@ function applyState(s) {
   $('keyBanner').textContent = s.keyProblem ? `⚠ ${s.keyProblem} Luego cierra y vuelve a abrir el panel.` : '';
 
   $('balanceValue').textContent = s.balanceUsd === null ? 'Configurar' : money(s.balanceUsd);
+  $('balanceValue').classList.toggle('word', s.balanceUsd === null);
   $('balanceMeter').title = s.settings.balanceSetAt
     ? `Saldo registrado el ${new Date(s.settings.balanceSetAt).toLocaleString('es')} menos lo gastado desde entonces. Clic para actualizar.`
     : 'Clic para registrar tu saldo de la API';
@@ -93,6 +94,7 @@ function applyState(s) {
   $('todayBar').style.width = `${pct}%`;
   $('todayBar').className = pct >= 100 ? 'danger' : pct >= 75 ? 'warn' : '';
   const reached = s.spentTodayUsd >= limit - 1e-9;
+  $('todayLed').classList.toggle('alert', reached);
   $('limitBanner').classList.toggle('hidden', !reached);
   $('limitBanner').textContent = reached
     ? `Llegaste a tu límite diario de ${money(limit)}. Las generaciones quedan bloqueadas hasta mañana o hasta que subas el límite en ⚙ Ajustes.`
@@ -430,17 +432,18 @@ async function openQuote() {
     state.pendingQuote = { body, q };
     const model = currentModel();
     const client = state.clients.find((c) => c.id === body.clientId);
+    // Third item marks numeric values, shown in the monospaced font.
     const rows = [
       ['Cliente', client?.name],
       ['Modelo', model.name],
       ['Modo', state.catalog.modes[state.mode]],
       ['Cantidad', q.quantity > 1 ? `${q.quantity} generaciones` : '1 generación'],
-      ['Precio por generación', money(q.unitUsd)],
-      ['Gastado hoy', money(q.spentTodayUsd)],
-      ['Hoy quedaría en', `${money(q.spentTodayUsd + q.totalUsd)} de ${money(q.dailyLimitUsd)}`],
+      ['Precio por generación', money(q.unitUsd), true],
+      ['Gastado hoy', money(q.spentTodayUsd), true],
+      ['Hoy quedaría en', `${money(q.spentTodayUsd + q.totalUsd)} / ${money(q.dailyLimitUsd)}`, true],
     ];
-    if (q.balanceUsd !== null) rows.push(['Saldo después', money(q.balanceUsd - q.totalUsd)]);
-    $('confirmSummary').replaceChildren(...rows.flatMap(([k, v]) => [el('dt', {}, k), el('dd', {}, v)]));
+    if (q.balanceUsd !== null) rows.push(['Saldo después', money(q.balanceUsd - q.totalUsd), true]);
+    $('confirmSummary').replaceChildren(...rows.flatMap(([k, v, num]) => [el('dt', {}, k), el('dd', { class: num ? 'mono' : '' }, v)]));
     $('confirmTotal').textContent = money(q.totalUsd);
     $('confirmDetail').textContent = `${CERTAINTY_LABEL[q.certainty]} ${q.detail}`;
     $('confirmBlocked').textContent = q.blocked || '';
@@ -538,14 +541,14 @@ function renderGallery() {
       const file = job.files?.[0];
       return el(
         'article',
-        { class: 'card' },
+        { class: `card ${ACTIVE.includes(job.status) ? 'active' : ''}` },
         el('div', { class: `card-media ${shape}` }, mediaFor(job), el('span', { class: `badge ${job.status}` }, STATUS_LABEL[job.status] || job.status)),
         el(
           'div',
           { class: 'card-body' },
-          el('div', { class: 'card-meta' }, el('span', { class: 'card-title' }, job.modelName), el('span', {}, (job.costCertainty === 'aproximado' ? '≈ ' : '') + money(job.costUsd))),
-          el('div', { class: 'card-meta' }, el('span', {}, job.clientName), el('span', {}, new Date(job.createdAt).toLocaleString('es', { dateStyle: 'short', timeStyle: 'short' }))),
-          el('div', { class: 'card-meta' }, el('span', {}, job.modeName), el('span', {}, [job.params?.duration && `${job.params.duration} s`, job.images?.length && job.model === 'kling3_0' ? null : job.params?.aspect, resolutionLabel(job)].filter(Boolean).join(' · '))),
+          el('div', { class: 'card-meta' }, el('span', { class: 'card-title' }, job.modelName), el('span', { class: 'card-cost' }, (job.costCertainty === 'aproximado' ? '≈ ' : '') + money(job.costUsd))),
+          el('div', { class: 'card-meta' }, el('span', {}, job.clientName), el('span', { class: 'num' }, new Date(job.createdAt).toLocaleString('es', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }))),
+          el('div', { class: 'card-meta' }, el('span', {}, job.modeName), el('span', { class: 'num' }, [job.params?.duration && `${job.params.duration} s`, job.images?.length && job.model === 'kling3_0' ? null : job.params?.aspect, resolutionLabel(job)].filter(Boolean).join(' · '))),
           el('p', { class: 'card-prompt', title: job.prompt }, job.prompt),
           job.error ? el('p', { class: 'card-error' }, job.error) : null,
           el(
@@ -576,7 +579,7 @@ function renderLog() {
       el(
         'tr',
         {},
-        el('td', {}, new Date(j.createdAt).toLocaleString('es', { dateStyle: 'short', timeStyle: 'short' })),
+        el('td', { class: 'date' }, new Date(j.createdAt).toLocaleString('es', { dateStyle: 'short', timeStyle: 'short' })),
         el('td', {}, j.clientName),
         el('td', {}, j.modelName),
         el('td', {}, j.modeName),
@@ -662,9 +665,44 @@ async function saveClient() {
   }
 }
 
+// ------------------------------------------------------------------ liquid glass behaviour
+
+// Edge refraction uses an SVG filter inside backdrop-filter, which only Chromium renders.
+// Everywhere else the panels keep the plain blur.
+function enableRefraction() {
+  const chromium = /Chrome\//.test(navigator.userAgent) && !/Firefox\//.test(navigator.userAgent);
+  if (chromium && window.CSS?.supports('backdrop-filter', 'blur(1px) url(#refract)')) {
+    document.documentElement.classList.add('refract-ok');
+  }
+}
+
+// The highlight on glass buttons follows the cursor.
+function wireSheen() {
+  document.addEventListener('pointermove', (e) => {
+    const btn = e.target.closest?.('.btn, .glass-btn');
+    if (!btn) return;
+    if (!btn.querySelector(':scope > .sheen')) btn.prepend(el('span', { class: 'sheen', 'aria-hidden': 'true' }));
+    const r = btn.getBoundingClientRect();
+    btn.style.setProperty('--mx', `${e.clientX - r.left}px`);
+    btn.style.setProperty('--my', `${e.clientY - r.top}px`);
+  }, { passive: true });
+}
+
+// Panels that scroll out of view stop blurring, so only visible glass costs GPU time.
+function limitBlurToVisible() {
+  if (!('IntersectionObserver' in window)) return;
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) e.target.classList.toggle('offscreen', !e.isIntersecting);
+  }, { rootMargin: '120px' });
+  document.querySelectorAll('.panel.glass').forEach((p) => io.observe(p));
+}
+
 // ------------------------------------------------------------------ start
 
 async function init() {
+  enableRefraction();
+  wireSheen();
+  limitBlurToVisible();
   const s = await api('GET', '/api/estado');
   applyState(s);
   state.modelId = modelsForMode(state.mode)[0]?.id;

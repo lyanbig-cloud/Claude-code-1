@@ -37,6 +37,8 @@ const MIME_BY_EXT = {
   '.mp4': 'video/mp4',
   '.mov': 'video/quicktime',
   '.webm': 'video/webm',
+  '.woff2': 'font/woff2',
+  '.txt': 'text/plain; charset=utf-8',
 };
 // A Higgsfield-hosted upload URL is reused for a few hours, then the file is uploaded again.
 const HF_URL_TTL_MS = 6 * 60 * 60 * 1000;

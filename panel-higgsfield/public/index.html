@@ -4,42 +4,62 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Panel Higgsfield · Dímelo Big</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2311131a'/%3E%3Cpath d='M12 9l12 7-12 7z' fill='%23f5b301'/%3E%3C/svg%3E">
+  <meta name="theme-color" content="#08070A">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%2308070A'/%3E%3Cpath d='M12 9l12 7-12 7z' fill='%23F0202B'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="topbar">
+  <!-- Light the glass refracts: slow, heavily blurred red blobs behind the interface. -->
+  <div class="backdrop" aria-hidden="true">
+    <span class="blob b1"></span>
+    <span class="blob b2"></span>
+    <span class="blob b3"></span>
+  </div>
+
+  <!-- Edge refraction for the glass panels (applied only where the browser supports it). -->
+  <svg class="svg-defs" aria-hidden="true" focusable="false">
+    <filter id="refract" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.008 0.012" numOctaves="2" seed="7" result="noise" />
+      <feGaussianBlur in="noise" stdDeviation="2" result="soft" />
+      <feDisplacementMap in="SourceGraphic" in2="soft" scale="38" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+  </svg>
+
+  <header class="topbar glass">
     <div class="brand">
-      <span class="brand-mark" aria-hidden="true">▶</span>
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z" /></svg></span>
       <div>
-        <strong>Dímelo Big Productions</strong>
-        <span class="muted">Panel de generación · Higgsfield</span>
+        <strong class="display">Dímelo Big</strong>
+        <span class="brand-sub">Centro de mando · Higgsfield</span>
       </div>
     </div>
     <div class="meters">
-      <button class="meter" id="balanceMeter" type="button" title="Actualizar saldo">
-        <span class="meter-label">Saldo API</span>
-        <span class="meter-value" id="balanceValue">—</span>
+      <button class="meter glass-btn" id="balanceMeter" type="button" title="Actualizar saldo">
+        <span class="meter-label"><span class="led"></span>Saldo API</span>
+        <span class="meter-value mono" id="balanceValue">—</span>
       </button>
       <div class="meter" id="todayMeter">
-        <span class="meter-label">Gastado hoy</span>
-        <span class="meter-value"><span id="spentToday">$0.00</span> <span class="muted">/ <span id="dailyLimit">$10.00</span></span></span>
+        <span class="meter-label"><span class="led" id="todayLed"></span>Gastado hoy</span>
+        <span class="meter-value mono"><span id="spentToday">$0.00</span> <span class="meter-of">/ <span id="dailyLimit">$10.00</span></span></span>
         <span class="bar"><span id="todayBar"></span></span>
       </div>
-      <button class="icon-btn" id="settingsBtn" type="button" title="Ajustes">⚙</button>
+      <button class="icon-btn glass-btn" id="settingsBtn" type="button" title="Ajustes" aria-label="Ajustes">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8" /><circle cx="16" cy="7" r="2" /><circle cx="10" cy="17" r="2" /></svg>
+      </button>
     </div>
   </header>
 
-  <div class="banner danger hidden" id="keyBanner"></div>
-  <div class="banner warn hidden" id="limitBanner"></div>
+  <div class="banner glass hidden" id="keyBanner" role="alert"></div>
+  <div class="banner glass hidden" id="limitBanner" role="alert"></div>
 
   <main class="layout">
-    <section class="panel composer" aria-label="Nueva generación">
+    <section class="panel glass refract composer" aria-label="Nueva generación">
+      <h1 class="panel-title display">Nueva generación</h1>
       <div class="field">
         <label for="clientSelect">Cliente</label>
         <div class="row">
           <select id="clientSelect"></select>
-          <button class="btn ghost" id="addClientBtn" type="button">+ Nuevo</button>
+          <button class="btn glass-btn" id="addClientBtn" type="button">+ Nuevo</button>
         </div>
       </div>
 
@@ -60,7 +80,7 @@
       </div>
 
       <div class="field" id="imagesField">
-        <label>Fotos de referencia <span class="count" id="imagesCount"></span></label>
+        <label>Fotos de referencia <span class="count mono" id="imagesCount"></span></label>
         <p class="hint" id="imagesNote"></p>
         <div class="dropzone" id="imagesZone" tabindex="0">
           <input type="file" accept="image/jpeg,image/png,image/webp" multiple hidden>
@@ -70,7 +90,7 @@
       </div>
 
       <div class="field" id="videosField">
-        <label>Videos de referencia <span class="count" id="videosCount"></span></label>
+        <label>Videos de referencia <span class="count mono" id="videosCount"></span></label>
         <div class="dropzone" id="videosZone" tabindex="0">
           <input type="file" accept="video/mp4,video/quicktime" multiple hidden>
           <span>Arrastra videos o <u>elige archivos</u> (MP4 o MOV)</span>
@@ -88,7 +108,7 @@
           <label for="duration">Duración <span class="muted" id="durationRange"></span></label>
           <div class="row">
             <input type="range" id="duration">
-            <output id="durationOut">5 s</output>
+            <output id="durationOut" class="mono">5 s</output>
           </div>
         </div>
         <div class="field" id="resolutionField">
@@ -120,12 +140,13 @@
       </div>
 
       <p class="form-error hidden" id="formError"></p>
-      <button class="btn primary big" id="quoteBtn" type="button">Ver costo y generar</button>
+      <button class="btn generate display" id="quoteBtn" type="button">Ver costo y generar</button>
       <p class="hint center">Siempre verás el costo y tendrás que confirmarlo antes de gastar.</p>
     </section>
 
-    <section class="panel results" aria-label="Galería">
+    <section class="panel glass refract results" aria-label="Galería">
       <div class="results-head">
+        <h2 class="panel-title display">Galería</h2>
         <div class="segmented small" role="tablist">
           <button type="button" class="active" data-view="gallery">Galería</button>
           <button type="button" data-view="log">Registro</button>
@@ -148,56 +169,56 @@
     </section>
   </main>
 
-  <dialog id="confirmDialog">
+  <dialog id="confirmDialog" class="glass">
     <form method="dialog" class="dialog">
-      <h2>Confirmar gasto</h2>
+      <h2 class="display">Confirmar gasto</h2>
       <dl class="summary" id="confirmSummary"></dl>
       <div class="total-box">
         <span>Costo total</span>
-        <strong id="confirmTotal">$0.00</strong>
+        <strong id="confirmTotal" class="mono">$0.00</strong>
       </div>
       <p class="hint" id="confirmDetail"></p>
-      <p class="banner danger hidden" id="confirmBlocked"></p>
+      <p class="alert hidden" id="confirmBlocked" role="alert"></p>
       <label class="check hidden" id="approxCheck">
         <input type="checkbox" id="approxAccept">
         <span>Entiendo que este precio es <b>aproximado</b> y puede variar.</span>
       </label>
       <div class="dialog-actions">
-        <button class="btn ghost" value="cancel">Cancelar</button>
-        <button class="btn primary" id="confirmBtn" value="ok" type="button">Confirmar y generar</button>
+        <button class="btn glass-btn" value="cancel">Cancelar</button>
+        <button class="btn generate display" id="confirmBtn" value="ok" type="button">Confirmar y generar</button>
       </div>
     </form>
   </dialog>
 
-  <dialog id="settingsDialog">
+  <dialog id="settingsDialog" class="glass">
     <form method="dialog" class="dialog">
-      <h2>Ajustes de gasto</h2>
+      <h2 class="display">Ajustes de gasto</h2>
       <div class="field">
         <label for="limitInput">Límite de gasto diario (USD)</label>
-        <input type="number" id="limitInput" min="0" step="0.5">
+        <input type="number" id="limitInput" class="mono" min="0" step="0.5">
       </div>
       <div class="field">
         <label for="balanceInput">Saldo actual de la API (USD)</label>
-        <input type="number" id="balanceInput" min="0" step="0.01" placeholder="Ej. 25.00">
+        <input type="number" id="balanceInput" class="mono" min="0" step="0.01" placeholder="25.00">
         <p class="hint">Cópialo de <a href="https://console.higgsfield.ai" target="_blank" rel="noopener">console.higgsfield.ai</a>. El panel le resta cada generación automáticamente; actualízalo cuando recargues saldo.</p>
       </div>
       <div class="dialog-actions">
-        <button class="btn ghost" value="cancel">Cancelar</button>
-        <button class="btn primary" id="saveSettingsBtn" type="button">Guardar</button>
+        <button class="btn glass-btn" value="cancel">Cancelar</button>
+        <button class="btn primary display" id="saveSettingsBtn" type="button">Guardar</button>
       </div>
     </form>
   </dialog>
 
-  <dialog id="clientDialog">
+  <dialog id="clientDialog" class="glass">
     <form method="dialog" class="dialog">
-      <h2>Nuevo cliente</h2>
+      <h2 class="display">Nuevo cliente</h2>
       <div class="field">
         <label for="clientName">Nombre del cliente</label>
         <input type="text" id="clientName" maxlength="80" placeholder="Ej. Restaurante La Esquina">
       </div>
       <div class="dialog-actions">
-        <button class="btn ghost" value="cancel">Cancelar</button>
-        <button class="btn primary" id="saveClientBtn" type="button">Agregar</button>
+        <button class="btn glass-btn" value="cancel">Cancelar</button>
+        <button class="btn primary display" id="saveClientBtn" type="button">Agregar</button>
       </div>
     </form>
   </dialog>

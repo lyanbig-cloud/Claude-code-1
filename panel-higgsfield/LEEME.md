@@ -64,7 +64,7 @@ La carpeta `data/` no se sube a GitHub.
 
 ## Colores de marca
 
-Están al inicio de `public/styles.css` (`--accent`, `--bg`, etc.).
+Paleta cerrada de la marca, al inicio de `public/styles.css`: `--red` #F0202B, `--red-deep` #B00C16, `--ink` #08070A, `--ink-2` #111014 y blanco. Tipografías incluidas en `public/fonts` (funcionan sin internet): Anton, Montserrat y JetBrains Mono.
 
 ## Comprobar que todo funciona (sin gastar)
 
