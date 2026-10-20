@@ -78,3 +78,64 @@ Todo número viene de lo que el buscador muestra (prensa, perfiles indexados). L
 - Raymond Lee Jewelers (Boca Raton FL): TikTok como embudo a tienda y web; audiencia 50/50 hombres-mujeres; tier micro (creatordb).
 - Pereira Jewelry: hace SKETCHES de negociación y regateo con clientes (TikTok discover "relatable jewelry business skit"). Cali & Co Jewelry: POV skits de trabajar en joyería.
 - Tendencia (Rapaport): contenido casual, grabado en cuartos y carros, no comerciales pulidos.
+
+## Lote 12
+- Pereira Jewelry (@pereirajewelry, Hartford CT): 276.7K seguidores TikTok, 7M likes. Video #negotiation 9.3M vistas; compra de oro de joyería vieja 66.4K; historia de cliente 3.2M (lote 1). Sketches de regateo. Cuenta personal @diegopereira2156.
+- DBL Jewelry / @ceo.liv: "Cheating Series" numerada (ej. #12 "Thanksgiving Edition": placas grabadas para novio y mejor amiga infieles, entregadas en la cena de Acción de Gracias). Junio 2021: +2M likes, +10K coment. Forbes 30 under 30 (según artículo). ~2M TikTok (Heepsy abr-2025). Ojo: credibilidad cuestionada en comentarios (algunas historias "demasiado buenas").
+- Icebox: 7M TikTok en 2022 = 15x Cartier (Axios). Equipo interno 8 personas, shopping sprees VIP.
+- Accessories of Old: ~9M reproducciones en 9 meses de videos de CLIENTES (sin pagar influencers).
+- Christine Jewellers: objetivo declarado = educar al consumidor, no solo vender.
+- Julia Azeroual @watchbyjuls: +750K TikTok; compra/vende relojes; "compra $36,000 en relojes en un día" (NBC). Airbnb Experience: tour del Diamond District con joyero de TikTok (monetizar fama).
+- JewelsWithJules (Julia Hackman Chafé, Intercolor USA, negocio familiar de gemas): 60K+, videos de ~20 segundos (National Jeweler "jewelry's first TikTok star").
+- Mystery jewelry: Olivia Gilcher (MSU) abre bolsas/cajas de joyería de segunda mano desde 2023 (JCK). Rebecca Zhao: marca hecha a mano 100K seguidores y $100K ventas en <2 años.
+
+## Lote 13
+- Prensa del sector: TikTok premia autenticidad sobre producción (National Jeweler 2020/2021: "menos formal, más divertido"; descubrimiento sin muchos seguidores). Instagram: joyeros dicen que hace falta pagar para alcance orgánico (JCK). Marla Aaron: piezas cinéticas (movimiento) funcionan en video (Rapaport). Bodas: tendencias nacen en TikTok y migran a IG (Centurion).
+- Johnny Dang: serie "House of Dang" (VICE) episodios "Johnny Dang Ices Out Everyone at ASTROWORLD", "Loyalty is Worth More Than Diamonds" (final). Respuesta en 4 partes a Sauce Walka (drama). Proceso molde de dientes de Justin Bieber. Reacción de IShowSpeed frente al espejo. Vendía ~400 pares de grillz/día (2005).
+- Latinos: Juan Joyas (Houston, cientos-miles de likes; video de "retirar piezas de mala calidad"); JY Joyería Cubana Houston @jyjoyeriacubana ~5,500 seg / 29.7K likes (cubana, chica); @joyerialos_angeles (Sacramento) ~428.5K; Hellen Jewelry y tiendas del Jewelry District LA: pocos likes por video (catálogo de 14k).
+
+## Lote 14 (plataformas)
+- TikTok Creative Center: gratis con cuenta TikTok for Business, sin gastar. Top Ads (filtros región/industria/objetivo/formato, likes/coment/shares), Trends (hashtags, canciones, keywords, creadores; 24h/30d/120d por categoría). Limitación: solo anuncios autorizados.
+- Meta Ad Library: gratis, sin login; anuncios ACTIVOS de FB/IG por país; copy, creativo, CTA, fecha de inicio. No muestra rendimiento ni contenido orgánico. Señal: anuncio que lleva +60 días corriendo = ganador (solo 11.3% sobrevive). Joyería: unboxing UGC y carruseles lifestyle.
+- Social Blade: gratis; historial de seguidores/vistas en YouTube, IG, TikTok, Twitch, FB; ganancias estimadas (poco fiables).
+- Sandcastles: detecta "outliers" (video con muchas más vistas que el promedio del creador), transcribe, desglosa ganchos; $39/mes. (Conectado a esta cuenta pero no conectó en esta sesión.)
+- Google Trends: búsquedas "sell gold" cerca de récords de ago-2011 (Bespoke, feb-2026); oro rozó récord ~$5,600/oz (feb-2026). Momento ideal para contenido de compra de oro.
+- Gold & Diamond Source (Clearwater, desde 1984, Steve Weintraub, "una de las joyerías familiares más grandes de EE.UU."): sin presencia viral; reseña queja por oferta baja de anillos usados → la compra de oro genera desconfianza; transparencia = oportunidad.
+- YouTube Shorts: jewelry making/DIY 159K–602K, uno 1.3M; Moses The Jeweler (canal Shorts). Tendencia: detrás de cámaras > anuncios pulidos (Centurion jun-2026). Pedir a clientes videos usándolas (National Jeweler).
+- LIVE: MariGOLD Pilipinas 470K seguidores por lives de 19 horas; MJM Gold 54.8x ingresos. IG Live quitó etiquetas de producto en mar-2023. Whatnot funciona para algunos.
+- Hardcore Pawn (Les Gold, American Jewelry and Loan, Detroit, 1978; 5 locales, 200 empleados): familia (Les, hijo Seth, hija Ashley) ⇒ el drama familiar en la tienda fue 9 temporadas de TV (2010-2015). Hoy hacen TikTok padre-hijo.
+
+## Lote 15 (videos concretos)
+- CRM @crmjewelers: Roilan llega con 3 piezas, negociación "¿Carlos hizo buen trato?" 541.9K likes/2,572 coment; "¿Natalie le venderá este Rolex a Roilan o detectará la trampa?" (serie con personajes recurrentes); "Kevin scams him with fake receipt" (tiktok.com/@crmjewelers/video/7308142838603320622); "Cuando te dan su palabra de caballero... ¡CORRE! #cubanosenmiami" 134.2K likes/677 (dic-2024, video 7451309184118754591); "¿Cartier o Rolex?" (7550052703112596767); "¿Cuál es su modelo favorito de Rolex?" (7510980616997981470); "Why it's Charlie's favorite" (7244646748164050218); "Would you have done the same?" 1,978 likes (7267183720291896618) = bajo. Cuenta de terceros: "alguien trajo un Rolex falso a CRM" 423.6K likes. "Califica este Rolex del 1 al 10" 6,662 likes (bajo).
+- Christine Jewellers: video de prueba de rayado 188,570 vistas/3,985 likes (agregador, poco fiable).
+- Todd Alan: "Why is this one of the most expensive rings Todd has ever made?" (video 7527747818514156830); "Call Lyra at 941-217-4969 to create your own unique Trinity Ring #ringoftheday" 76.1K likes/536 coment → CTA = llamar a Lyra por nombre con teléfono.
+- ittybittycherry: "un joyero de centro comercial dañó mi anillo de compromiso al ajustarlo" 5.7M vistas, 435K likes (Daily Dot). Jared Jewelers devolvió anillo destruido (The Mary Sue). Mujer cuyo anillo fue vendido por la joyería (inkl). ⇒ TEMA: miedo a dejar tu anillo en el joyero → Tio (garantía de por vida) puede "arreglar lo que otros dañaron" y mostrar transparencia.
+- Vookum: ~2.2M TikTok, +$1M flipeando relojes a los 24 (Whop). "Women take over NYC's Diamond District" (ABC News podcast).
+- Gusvilla y Massoyan: sin datos de seguidores visibles.
+
+## Lote 16 (lo que no funciona / benchmarks)
+- Rival IQ 2025: mediana de engagement en IG 0.36% (todas las industrias), top 25% ≥1.02%; IG cayó 16% interanual; carruseles superaron a reels en engagement. Belleza: 0.14%. Joyería de lujo ~0.5% (histórico). Cartier ~0.04% en relojes (2016). Marcas grandes = muchos seguidores, poca interacción por publicación de producto.
+- Johnny Dang 3.6M IG con 8.6K–16.5K likes promedio (≈0.3–0.45%); TraxNYC 4.2M con 25.2K likes promedio (≈0.6%); CRM: videos de producto "Califica este Rolex del 1 al 10" 6,662 likes y "Would you have done the same?" 1,978 likes vs sus virales de 500K+ → mismo perfil, el producto solo NO jala; la historia sí.
+- Propuestas: empleada de Kay (Locust Grove GA) grabó propuesta con serenata en la tienda: +8.5M vistas. Reacción a diamante azul 13.8M vistas, 833K likes (debate "¿malagradecida u honesta?").
+- Kerri Lavine "The Godmother" (Diamond District, +40 años) y Julia Azeroual (ABC mar-2024): mujeres en negocio de hombres = ángulo de historia. @bennydajeweler (creatordb).
+
+## Lote 17 (español)
+- Don Joyero (Daniel Pérez, 27, Perú): ~210K; arrancó con video viral de cómo LO ESTAFARON al mandar a hacer un anillo conmemorativo; misión: enseñar a reconocer oro/plata para que no te estafen (Trome).
+- Video viral (LM Neuquén): "fue a tasar la pulsera de oro que le heredó su abuela y se llevó una sorpresa" → formato TASACIÓN DE HERENCIA.
+- Infobae España jul-2025: cuenta española de tasación de oro con millones de vistas en TODOS sus videos; muestra el proceso: imán + piedra de toque con ácido.
+- Joyería Venezia (Bogotá): "3 formas de saber si tu joya es de oro... Guarda este video" (CTA guardar). Tutorial "5 consejos" 20.1K likes. Mito del imán desmentido (joyero Torremolinos).
+- Maestros Joyeros (México): "la joyería mexicana que conquistó a Billie Eilish, Natanael Cano, Travis Scott" (dicho por terceros). Stephanie Erbe Jewelry (@stephanieerbe.mx) humor. Bizzarro Joyería: humor de empleados.
+- Benny the Jeweler (@bennydajeweler, 3 W 47th St): ~435–469K (plataforma no clara).
+- ***** Novecento by Heritage (joyería catalana): joven lleva a tasar pulsera "de oro" heredada de su abuela → pesa poco, sin sellos, NO es oro → +10M reproducciones TikTok; comentarios llenos de gente contando que su herencia también era falsa (LM Neuquén).
+- ***** @tuorovalemas (Isaac Sánchez, "Tu Oro Vale Más", Madrid): referente en tasación; viral: Guillermo Fernández lleva centenarios mexicanos de 50 pesos heredados de su abuela, hasta 3,200 € c/u → "casi un millón de pesos" (Infobae México 6-sep-2025). Ferrezuelo (Cádiz) mismo formato.
+- TikTok paga poquísimo (9.5M vistas ≈ 23 €): el valor es el cliente, no la monetización.
+- Grabado de letra a mano (handwriting): nació como joya conmemorativa (artista de Etsy con letra de su abuela fallecida); se graba la firma de una tarjeta. Reacciones emotivas en reseñas. No hay video viral verificable, pero es el uso emocional ideal del grabado láser de Tio.
+- Wristwatch Revival (Marshall Sutcliffe, Seattle): restauración de relojes viejos en YouTube → millones de vistas (ABC10). "Watch Restorer" ~364K subs (vidIQ abr-2025). Formato largo YouTube + IG.
+- Parejas de negocio (fuera del nicho): imprenta de esposos en Wollongong (Kylie y Simon Morrisey): proceso de producción → 4 videos de 8–10M. Kay y Tay Dudley: él la graba a escondidas comprando en Target → más alcance que lo guionizado. Bromas/peleas amistosas de pareja.
+- Casas de empeño en español: casi nada viral; @raymundovarela1 (México) compara cuáles casas de empeño son más baratas (consumidor, no dueño). +9,000 casas de empeño en México. HUECO DE MERCADO: casi nadie hace contenido humano de empeño en español.
+
+## Lote 18 (Ariel detalle + otros)
+- Ariel @ariels.jewelry frases fijas: "caballero super elegante", "dama super elegante", "fuerte pero elegante". Videos: "Negociación de más de 3 horas... compramos 5 relojes y le vendimos 2" 105.7K likes/621 (7494437589768752415); "Feliz de poder cerrar negocio con otro caballero elegante" 167.5K likes/635 (7499648635315997983); "Y vamos que se calentó esto un poco 😅 ¿Cerramos o no?" 67.7K likes/881 coment (7486285092801826079) → pregunta al público = muchos comentarios; "Hicimos lo que pudimos, pero lo disfrutamos😂" (7491469080877206814); "No siempre podemos lo que se quiere... gracias por confiar" (7510793102001573151); "Otros clientes felices... gracias @al_mara y su esposo por la visita desde Cape Coral" (7430967228297645354) → gente viaja desde la costa oeste de FL (cerca de Sarasota!); RIFA de 3 relojes (Rolex Submariner, Cartier Ronde, Tag Heuer) en vivo simultáneo IG/TikTok/YouTube, requisito suscribirse a YouTube (7503698211303886110). "NUEVO VIDEO EN YOUTUBE" (7482175580415233311) → TikTok empuja a YouTube largo.
+- The Clear Cut (Olivia Landau + esposo Kyle): nació de blog educativo + IG; 95% clientes remotos; confían porque VEN LA CARA de los fundadores (Rapaport). Pareja en su blog "Clear Cut Couple".
+- Eliantte (@eliantteandco) ~1.34M IG, bajando (-3,384 jul–oct 2026) (DolphinRadar). Empezó en Avianne a los 17.
+- Tasaciones virales en inglés: anillo "lab de $8K" del ex resultó moissanita de $65 (The Mary Sue); Ellie Page compró anillo a £1 en tienda de caridad → 8.7M vistas, lo tasó (Coventry Telegraph).
