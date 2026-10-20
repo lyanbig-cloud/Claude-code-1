@@ -139,3 +139,8 @@ Todo número viene de lo que el buscador muestra (prensa, perfiles indexados). L
 - The Clear Cut (Olivia Landau + esposo Kyle): nació de blog educativo + IG; 95% clientes remotos; confían porque VEN LA CARA de los fundadores (Rapaport). Pareja en su blog "Clear Cut Couple".
 - Eliantte (@eliantteandco) ~1.34M IG, bajando (-3,384 jul–oct 2026) (DolphinRadar). Empezó en Avianne a los 17.
 - Tasaciones virales en inglés: anillo "lab de $8K" del ex resultó moissanita de $65 (The Mary Sue); Ellie Page compró anillo a £1 en tienda de caridad → 8.7M vistas, lo tasó (Coventry Telegraph).
+- Audry Rose (esposos Jaclyn + Kevin Elbaum, Park City UT): Kevin GRABÓ LA REACCIÓN de su esposa al enterarse de que Taylor Swift llevaba su collar → tráfico web +800%, pedidos se dispararon (KSL/Deseret nov-dic 2025). Formato: esposo graba reacción real de la esposa.
+- Zoe Roe (empleada de joyería): mezcló regalos de esposa y amante del infiel → +1.8M likes (Yahoo).
+- "Danny the Jeweler" + esposa Shannon: clips de fans sobre su historia de amor (TikTok discover).
+- Bartolomé Joyas (pareja Miriam Arakaki + Claudio Almada, Argentina): asesoran a celebridades.
+- Stuller: reels de joyería con buena luz y producto en foco; máx 90 s (dato viejo).
