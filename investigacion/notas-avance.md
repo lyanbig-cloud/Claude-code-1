@@ -38,3 +38,43 @@ Todo número viene de lo que el buscador muestra (prensa, perfiles indexados). L
 - Alfredo Fernández, abuelito joyero 77 años (Perú): proceso de joyas a mano + videos de comedia (Trome).
 - *** Ariel = Ariel Acosta, cubano de Colón, Matanzas; llegó a EE.UU. ~1980 (~10 años) "con una sola muda"; trabajó en supermercado ($40/semana); primer negocio: anillo comprado a $50 vendido a $100. Apodo "Caballero elegante". 7 joyerías. Videos de YouTube de terceros: "24 Horas con el Joyero más FAMOSO de Miami" (youtube.com/watch?v=uQu4l3-9xYM), "Charlando con el Joyero Más Famoso de Miami" (ThfiCXrVI-g), "Así es Ariel, el joyero más famoso de Miami" (GKrTUGAIrMc), en Show de Fernando Hidalgo (Omd3WCgcY2g). Noticias virales: "joven colombiano vendió su costoso reloj en reconocida joyería" (Olímpica Stereo) = sus videos se vuelven noticia en Latinoamérica. Hay quejas de clientes no probadas (Cuba Bajo Lupa) → riesgo reputacional del formato "regateo".
 - CRM (WATCHPRO ~2022): estratega entró en 2013 a estandarizar marca; YouTube desde 2013 como "experimento largo"; +400K IG y ~400K YouTube entonces. Un socio compra/vende y otro crea contenido de interacción con clientes para episodios "CRM Life" en YouTube; social manager hace los cortos. No son dealer autorizado (aviso legal).
+
+## Lote 6 (grandes en inglés / relojes)
+- TraxNYC (Tigran, Diamond District NYC): IG ~4.2M (Dolphin Radar 4,205,745; HypeAuditor avg 25.2K likes/post); TikTok 1.7M (JCK, sin fecha); YouTube +4M subs y +2,500M vistas totales (ThoughtLeaders). Virales: pelea/confrontación en tienda con hermanos Akay editada multi-cámara (Hell Gate) — "standing on business" (HotNewHipHop); botón de YouTube de diamante para MrBeast (Sportskeeda).
+- Icebox (Atlanta): equipo interno de 8 personas; videos de "shopping sprees" de VIP → 1.7M YouTube y ~7M TikTok (Axios 2022).
+- Pawn Stars: no visible ranking de clips; muchas páginas de terceros recortan clips (formato "regateo/tasación").
+- Exquisite Timepieces (Naples FL, desde 1998, dealer autorizado): sin datos de redes visibles. Competencia regional de relojes en el Golfo.
+- Watch dealers virales: John Buckley @tuscanyrose (Diamond District) ~1M TikTok, videos de negociación; Tyler Mikorski @vookum +2.2M, tratos/negociación; Mike Nouveau 200K+, serie callejera "Watch Spotting" (pregunta a desconocidos qué reloj llevan). Swiss Watch Gang 230K IG (hace ~5 años).
+- Cuidado: The Timepiece Gentleman (Dallas) desapareció con inventario en consignación → la confianza/garantía es diferenciador.
+- Mike Nouveau (@mikenouveau, East Village NYC): "Watch Spotting" = pregunta a gente en la calle qué reloj lleva; lo mejor = civiles con historia detrás del reloj; celebridades ocasionales (Emma Chamberlain, Emily Ratajkowski). Lo lanzó a la fama (Robb Report/Esquire). Formato "vox pop" (corq.studio: vox pops generan millones).
+- Diamond District NYC = escenario: Vookum, John Buckley, Julia Azer; "flipea un reloj en 30 min y gana $500" (NBC News "How TikTok took over NY's Diamond District"). Pasaron de virales a series "casi de TV".
+- Brooklyn Charm (Tracie Campbell + Adrienne Nappi): iban a cerrar en 2020; un TikTok de Marc Sebastian (172K vistas) llenó la tienda x5–x10; videos orgánicos +4.1M vistas (WWD); filas de horas (Gothamist). Lección: historia "estamos por cerrar" + experiencia en tienda (armar tu propia pieza).
+- Susannah King London (orfebre 4ta generación): videos hasta 8M; vendió 28 anillos (£20K) en <60 segundos en drop en vivo (2,000 mensajes). Formato: proceso de hacer anillos con piedras + "drop".
+
+## Lote 8 (reparación / limpieza / empeño)
+- Accessories of Old (Jon Goldsmith, Londres): bodega con +10M piezas vintage; un TikTok de una clienta lo hizo famoso (City AM). Lección: el cliente grabando tu tienda = UGC.
+- Limpieza ultrasónica antes/después: tema con 57.3M posts; Antioch Coin & Jewelry (@antiochcjp) "cómo limpiar tus joyas con ultrasonido" 363.6K vistas; @anwar.1231 36.6K likes; @lo_wens 35.6K likes; Adamans "el colgante más sucio" 4,254 likes. Crítica: parte de la "mugre" es residuo de pulido.
+- *** Massoyan Jewelers (@massoyanjewelers, TikTok/YT/IG/FB): restauraciones con historia: "El anillo de Amy apenas sobrevivió a un incendio..." (video 7509175069080325419); anillo roto en 4 puntos + "ella dice que está bien porque quiere que su esposo le compre uno más grande" (7380914943446535467). Láser/microsoldadura, #asmr #satisfying. CTA: "Sígueme en YouTube, TikTok, IG, FB; DM para restauraciones; no aceptamos reparaciones por correo". Vistas: no visibles.
+- Otros YouTube restauración: Modern Goldsmith; "DESTROYED Gold Ring Restoration, Dog Chew Repair"; "Restoring a Crushed Ring".
+- Joyería permanente (soldadura): #permanentjewelry 359.9M vistas; Atelier VM hashtag 2 mil millones; @elderwelder (Stan Tung) soldó dos anillos de boda → "welding" #3 en Google semanal.
+- Pawn Master Kail (@pawn.man): "vida en el negocio del oro" ~1.2M seguidores, 17.8M likes. "The Reliable Pawnbroker" en español ~9,857 (bajo).
+- Pawn Man = Evan Kail (Minnesota): aprendiz de oro/plata 2019; abrió St. Louis Park Gold and Silver en 2021; personaje "Pawn Man" + humor negro en cuenta alterna; ~1.2M TikTok, 17.8M likes. Personalidad > producto.
+- LO QUE NO FUNCIONA: Los Gold (LA) "( We Buy Gold ) Young stud sells me his pendant..." 86 likes; mejor 324 likes "Paid top dollar for this gold to a student". Clips de "compramos oro / pagamos más" sin historia = cientos de likes.
+- Joyería Ferrezuelo (Cádiz): cliente vende 6 monedas de oro y recibe 2,178 € ("pensaba que le íbamos a dar el doble") ~140K vistas + polémica (Infobae abr-2025). Reacción del cliente al precio = gancho.
+- *** York Jewelry @yorkjewelry17 (York Pérez, cubano Miami): "Ya no sé cómo voy a vendeeer el oro mi gente, 4730 hoy está la OZ y sigo vendiendo el Oro Más Barato Del Mundooo..." (video 7597426234448006431). Estilo gritón de precio (CONTRARIO al enfoque de Tio). 121K TikTok (2025).
+
+## Lote 10 (familias)
+- ***** TODD ALAN STUDIOS (SARASOTA, FL — misma ciudad que Tio): dúo padre-hija Todd Alan + Lyra Neff. Video donde ella le hace a su papá las preguntas de clientes: +47M vistas TikTok. Videos "off the cuff" (improvisados). Negocio ~ $1M. Incluye video viral con bebé ardilla (Business Observer FL, 30-ene-2026). COMPETIDOR LOCAL DIRECTO EN CONTENIDO.
+- Father And Son Jewelry (Medford, Oregon, desde 1958) @father_and_son_jewelry: detrás de cámaras, videos de "rant" del personal, causas locales (Toys for Tots).
+- Fidget rings (mamá + hijo, Rebecca y Jake Deczynski): hijo propuso TikTok; viral en agosto (Inc.).
+- Gabby & Elan Pinhasov: padre-hijo, grillz para artistas (Complex top 30).
+- Greg Yuna: entró al negocio familiar en 2009, Chapter II en 2017; videos en la 6ta Avenida durante los 51 segundos de luz roja, con celebridades (Wikipedia).
+- Ben Baller @benballer ~1.87M IG, ER 6.51% (HypeAuditor); pieza de Tyler the Creator $275K; tuvo reality online.
+- DBL Jewelry (Liv) ~2M TikTok (Heepsy abr-2025). Ryan Dreyfuss ~148K.
+- Don Joyero (Daniel Pérez, Perú): ~210K; arrancó con video viral sobre CÓMO LO ESTAFARON.
+- ***** Todd Alan Studios detalle: TikTok @todd_alan_studios. Todd Alan ("The Ringmaker", ~61 años, anillos tejidos a mano, +40 años, negocio desde 1986, tienda 1990). Hija Lyra Neff (36, ejecutiva de oficina). Video que los "explotó": septiembre, Lyra le hace preguntas de clientes como "¿Los diamantes son raros?" → +47M vistas (otro reporte: 57M). Ardilla bebé "Charlie" rescatada, alimentada con biberón, liberada y volvió → +19M vistas en Instagram. Total +75M vistas (BO ene-2026); +1M seguidores entre redes. "Wand or scepter?" (varita o cetro, debate padre-hija) 637.7K likes, 5,786 coment (video 7310283117846121770). Contenido lo publica agencia Siesta Media LLC (llegó en persona a ofrecer servicio). Resultado: seleccionado para New York Fashion Week sept-2026. Contenido educativo sobre gemas + dinámica familiar + animales/vida real.
+- Referencia fuera del nicho: @dadofdrama (Tom Allen) — la hija lo convenció de abrir TikTok → 80M vistas. Patrón "hija/o mete al papá en TikTok" funciona.
+- Todd Alan: +18,000 anillos hechos a mano; estudio en Rosemary District, Sarasota; scout de NYFW los contactó y él lo atribuye a sus redes (BO jul-2026; mysuncoast ago-2026).
+- Raymond Lee Jewelers (Boca Raton FL): TikTok como embudo a tienda y web; audiencia 50/50 hombres-mujeres; tier micro (creatordb).
+- Pereira Jewelry: hace SKETCHES de negociación y regateo con clientes (TikTok discover "relatable jewelry business skit"). Cali & Co Jewelry: POV skits de trabajar en joyería.
+- Tendencia (Rapaport): contenido casual, grabado en cuartos y carros, no comerciales pulidos.
